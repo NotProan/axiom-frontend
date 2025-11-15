@@ -1,0 +1,48 @@
+.biblioteca {
+  padding: 20px 0;
+}
+
+.biblioteca-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.biblioteca-header h1 {
+  font-size: 32px;
+}
+
+.grid-juegos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.sin-juegos {
+  text-align: center;
+  color: white;
+  padding: 60px 20px;
+  font-size: 20px;
+}
+
+.cargando {
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  padding: 100px 20px;
+}
+
+.grid-juegos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+  gap: 25px;
+}
+
+@media (max-width: 768px) {
+  .grid-juegos {
+    grid-template-columns: 1fr;
+  }
+}

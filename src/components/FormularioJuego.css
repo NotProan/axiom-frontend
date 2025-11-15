@@ -1,0 +1,55 @@
+.formulario-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.445);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.formulario-juego {
+  background: rgba(0, 0, 0, 0.877);
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.formulario-juego h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.formulario-juego label {
+  display: block;
+  margin-bottom: 15px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-label input {
+  width: auto;
+}
+
+.formulario-acciones {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.formulario-acciones button {
+  flex: 1;
+}
