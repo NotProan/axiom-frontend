@@ -14,6 +14,18 @@ function BibliotecaJuegos() {
   useEffect(() => {
     cargarJuegos()
   }, [])
+  
+useEffect(() => {
+    const handleAbrirFormulario = () => {
+      setMostrarFormulario(true)
+    }
+
+    window.addEventListener('abrirFormularioJuego', handleAbrirFormulario)
+
+    return () => {
+      window.removeEventListener('abrirFormularioJuego', handleAbrirFormulario)
+    }
+  }, [])
 
   const cargarJuegos = async () => {
     try {
