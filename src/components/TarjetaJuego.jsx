@@ -36,11 +36,6 @@ function TarjetaJuego({ juego, onEliminar, onEditar }) {
             {renderEstrellas(juego.puntuacion)}
           </div>
 
-          <div className="tarjeta-descripcion">
-            <p><strong>Descripción</strong></p>
-            <p>⏱️ {juego.horasJugadas} horas jugadas</p>
-          </div>
-
           <div className="tarjeta-acciones">
             <button 
               className="btn-editar"

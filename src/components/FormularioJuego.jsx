@@ -5,16 +5,35 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
   const [formData, setFormData] = useState({
     titulo: '',
     portada: '',
-    plataforma: '',
-    genero: '',
+    plataforma: [],
+    genero: [],
     completado: false,
     puntuacion: 0,
-    horasJugadas: 0
+    horasJugadas: 0,
+    descripcion: ''
   })
+
+  const plataformasDisponibles = [
+    'PlayStation 5', 'PlayStation 4', 'Xbox Series X/S', 
+    'Xbox One', 'Nintendo Switch', 'PC', 'Mobile'
+  ]
+
+  const generosDisponibles = [
+    'Acción', 'Aventura', 'RPG', 'Deportes', 
+    'Estrategia', 'Puzzle', 'Terror', 'Simulación'
+  ]
 
   useEffect(() => {
     if (juegoEditar) {
-      setFormData(juegoEditar)
+      setFormData({
+        ...juegoEditar,
+        plataforma: Array.isArray(juegoEditar.plataforma) 
+          ? juegoEditar.plataforma 
+          : [juegoEditar.plataforma],
+        genero: Array.isArray(juegoEditar.genero) 
+          ? juegoEditar.genero 
+          : [juegoEditar.genero]
+      })
     }
   }, [juegoEditar])
 
@@ -26,119 +45,156 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
     })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    onGuardar(formData)
+  const handleMultiSelect = (name, value) => {
+    const currentArray = formData[name]
+    const newArray = currentArray.includes(value)
+      ? currentArray.filter(item => item !== value)
+      : [...currentArray, value]
+    
     setFormData({
-      titulo: '',
-      portada: '',
-      plataforma: '',
-      genero: '',
-      completado: false,
-      puntuacion: 0,
-      horasJugadas: 0
+      ...formData,
+      [name]: newArray
     })
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    
+    const dataToSend = {
+      ...formData,
+      plataforma: formData.plataforma.join(', '),
+      genero: formData.genero.join(', ')
+    }
+    
+    onGuardar(dataToSend)
+  }
+
   return (
-    <div className="formulario-overlay">
-      <form className="formulario-juego" onSubmit={handleSubmit}>
-        <h2>{juegoEditar ? ' Editar Juego' : ' Agregar Juego'}</h2>
-        
-        <label>
-          Título *
-          <input
-            type="text"
-            name="titulo"
-            value={formData.titulo}
-            onChange={handleChange}
-            required
-            placeholder="Ej: The Last of Us"
-          />
-        </label>
+    <div className="formulario-overlay-acrylic">
+      <div className="formulario-container-acrylic">
+        <h2 className="formulario-titulo">
+          {juegoEditar ? 'Editar Juego' : 'Agregar Nuevo Juego'}
+        </h2>
 
-        <label>
-          URL de Portada
-          <input
-            type="url"
-            name="portada"
-            value={formData.portada}
-            onChange={handleChange}
-            placeholder="https://ejemplo.com/imagen.jpg"
-          />
-        </label>
+        <form onSubmit={handleSubmit} className="formulario-grid">
+          {/* Fila 1 */}
+          <div className="form-group">
+            <label>Título</label>
+            <input
+              type="text"
+              name="titulo"
+              value={formData.titulo}
+              onChange={handleChange}
+              required
+              placeholder="Ej: The Last of Us"
+            />
+          </div>
 
-        <label>
-          Plataforma *
-          <select name="plataforma" value={formData.plataforma} onChange={handleChange} required>
-            <option value="">Selecciona una plataforma</option>
-            <option value="PlayStation 5">PlayStation 5</option>
-            <option value="PlayStation 4">PlayStation 4</option>
-            <option value="Xbox Series X/S">Xbox Series X/S</option>
-            <option value="Xbox One">Xbox One</option>
-            <option value="Nintendo Switch">Nintendo Switch</option>
-            <option value="PC">PC</option>
-            <option value="Mobile">Mobile</option>
-          </select>
-        </label>
+          <div className="form-group">
+            <label>URL de Portada</label>
+            <input
+              type="url"
+              name="portada"
+              value={formData.portada}
+              onChange={handleChange}
+              placeholder="https://ejemplo.com/imagen.jpg"
+            />
+          </div>
 
-        <label>
-          Género *
-          <select name="genero" value={formData.genero} onChange={handleChange} required>
-            <option value="">Selecciona un género</option>
-            <option value="Acción">Acción</option>
-            <option value="Aventura">Aventura</option>
-            <option value="RPG">RPG</option>
-            <option value="Deportes">Deportes</option>
-            <option value="Estrategia">Estrategia</option>
-            <option value="Puzzle">Puzzle</option>
-            <option value="Terror">Terror</option>
-            <option value="Simulación">Simulación</option>
-          </select>
-        </label>
+          {/* Fila 2 - Plataformas */}
+          <div className="form-group form-group-full">
+            <label>Plataformas</label>
+            <div className="multi-select-container">
+              {plataformasDisponibles.map(plat => (
+                <button
+                  key={plat}
+                  type="button"
+                  className={`multi-select-btn ${formData.plataforma.includes(plat) ? 'selected' : ''}`}
+                  onClick={() => handleMultiSelect('plataforma', plat)}
+                >
+                  {plat}
+                </button>
+              ))}
+            </div>
+          </div>
 
-        <label>
-          Puntuación (1-5 estrellas)
-          <input
-            type="number"
-            name="puntuacion"
-            min="0"
-            max="5"
-            value={formData.puntuacion}
-            onChange={handleChange}
-          />
-        </label>
+          {/* Fila 3 - Géneros */}
+          <div className="form-group form-group-full">
+            <label>Géneros</label>
+            <div className="multi-select-container">
+              {generosDisponibles.map(gen => (
+                <button
+                  key={gen}
+                  type="button"
+                  className={`multi-select-btn ${formData.genero.includes(gen) ? 'selected' : ''}`}
+                  onClick={() => handleMultiSelect('genero', gen)}
+                >
+                  {gen}
+                </button>
+              ))}
+            </div>
+          </div>
 
-        <label>
-          Horas Jugadas
-          <input
-            type="number"
-            name="horasJugadas"
-            min="0"
-            value={formData.horasJugadas}
-            onChange={handleChange}
-          />
-        </label>
+          {/* Fila 4 */}
+          <div className="form-group">
+            <label>Puntuación (1-5)</label>
+            <input
+              type="number"
+              name="puntuacion"
+              min="0"
+              max="5"
+              value={formData.puntuacion}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            name="completado"
-            checked={formData.completado}
-            onChange={handleChange}
-          />
-          ¿Juego completado?
-        </label>
+          <div className="form-group">
+            <label>Horas Jugadas</label>
+            <input
+              type="number"
+              name="horasJugadas"
+              min="0"
+              value={formData.horasJugadas}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="formulario-acciones">
-          <button type="submit" className="btn-primary">
-            {juegoEditar ? 'Guardar Cambios' : 'Agregar Juego'}
-          </button>
-          <button type="button" className="btn-secondary" onClick={onCancelar}>
-            Cancelar
-          </button>
-        </div>
-      </form>
+          {/* Fila 5 - Descripción */}
+          <div className="form-group form-group-full">
+            <label>Descripción</label>
+            <textarea
+              name="descripcion"
+              value={formData.descripcion}
+              onChange={handleChange}
+              rows="4"
+              placeholder="Escribe una descripción del juego..."
+            />
+          </div>
+
+          {/* Checkbox */}
+          <div className="form-group form-group-full">
+            <label className="checkbox-container">
+              <input
+                type="checkbox"
+                name="completado"
+                checked={formData.completado}
+                onChange={handleChange}
+              />
+              <span>Juego completado?</span>
+            </label>
+          </div>
+
+          {/* Botones */}
+          <div className="form-actions">
+            <button type="submit" className="btn-submit-acrylic">
+              {juegoEditar ? 'Guardar Cambios' : 'Agregar Juego'}
+            </button>
+            <button type="button" className="btn-cancel-acrylic" onClick={onCancelar}>
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

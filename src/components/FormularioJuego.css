@@ -1,55 +1,212 @@
-.formulario-overlay {
+.formulario-overlay-acrylic {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.445);
+  background: rgba(0, 0, 0, 0.432);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   padding: 20px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
-.formulario-juego {
-  background: rgba(0, 0, 0, 0.877);
-  padding: 30px;
-  border-radius: 10px;
-  max-width: 500px;
+.formulario-container-acrylic {
+  background: linear-gradient(135deg, rgba(43, 5, 255, 0.329), rgba(17, 199, 255, 0.295));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 700px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-.formulario-juego h2 {
-  color: #ffffff;
-  margin-bottom: 20px;
-}
-
-.formulario-juego label {
-  display: block;
+.formulario-titulo {
+  color: white;
+  font-size: 28px;
   margin-bottom: 15px;
-  color: #ffffff;
-  font-weight: 500;
+  text-align: center;
+  font-weight: 600;
 }
 
-.checkbox-label {
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: -5px;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.form-group input,
+.form-group textarea {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(5, 14, 95, 0.384);
+  border-radius: 8px;
+  padding: 12px 15px;
+  color: white;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(102, 126, 234, 0.8);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.multi-select-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.multi-select-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.multi-select-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.multi-select-btn.selected {
+  background: rgba(102, 126, 234, 0.6);
+  border-color: rgba(102, 126, 234, 0.8);
+  color: white;
+  font-weight: 600;
+}
+
+
+.checkbox-container {
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 }
 
-.checkbox-label input {
-  width: auto;
+.checkbox-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #6a04a5;
 }
 
-.formulario-acciones {
+.checkbox-container span {
+  color: white;
+  font-size: 14px;
+}
+
+/* Botones de acción */
+.form-actions {
+  grid-column: 1 / -1;
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: -10px;
 }
 
-.formulario-acciones button {
+.btn-submit-acrylic,
+.btn-cancel-acrylic {
   flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-submit-acrylic {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-submit-acrylic:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-cancel-acrylic {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-cancel-acrylic:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Scrollbar personalizado */
+.formulario-container-acrylic::-webkit-scrollbar {
+  width: 8px;
+}
+
+.formulario-container-acrylic::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.formulario-container-acrylic::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.formulario-container-acrylic::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formulario-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .formulario-container-acrylic {
+    padding: 25px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
 }

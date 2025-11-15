@@ -57,7 +57,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0px;
   color: white;
 }
 
@@ -87,12 +87,7 @@
 
 .tarjeta-puntuacion {
   font-size: 17px;
-  margin: 8px 0;
-}
-
-.tarjeta-descripcion {
-  flex: 1;
-  font-size: 14px;
+  margin: 0px 0;
 }
 
 .tarjeta-descripcion p {
