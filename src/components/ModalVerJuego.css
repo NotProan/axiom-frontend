@@ -218,6 +218,15 @@
   animation: slideDown 0.3s forwards ease;
 }
 
+.contador-juegos {
+  color: white;
+  font-size: 14px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold ;
+}
+
 @keyframes slideDown {
   from {
     transform: translateY(0);

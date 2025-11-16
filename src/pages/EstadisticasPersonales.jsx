@@ -152,7 +152,7 @@ function EstadisticasPersonales() {
         <div className="juegos-recientes">
           <h2>🕒 Últimos Juegos Agregados</h2>
           <div className="lista-recientes">
-            {juegos.slice(-5).reverse().map(juego => (
+            {juegos.slice(-4).reverse().map(juego => (
               <div key={juego._id} className="item-reciente">
                 <img 
                   src={juego.portada || 'https://via.placeholder.com/100x140?text=Sin+Portada'} 

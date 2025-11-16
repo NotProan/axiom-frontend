@@ -145,7 +145,7 @@ if (filtros.puntuacionMax) {
 return (
   <div className="biblioteca">
     <div className="biblioteca-header">
-      <h1>Mi Biblioteca de Juegos</h1>
+      <h1>Tu Biblioteca</h1>
     </div>
 
     <div className="biblioteca-contenido">

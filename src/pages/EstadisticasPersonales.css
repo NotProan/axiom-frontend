@@ -1,5 +1,7 @@
 .estadisticas {
   padding: 20px 0;
+  max-width: 800px;
+  margin-left: 500px;
 }
 
 .estadisticas h1 {
@@ -15,17 +17,19 @@
 }
 
 .stat-card {
-  background: white;
+  background: rgba(21, 3, 104, 0.363);
   padding: 30px;
   border-radius: 10px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 15px rgba(0,0,0,0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 30px;
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 25px rgba(104, 3, 236, 0.37);
+  border-radius: 30px;
 }
 
 .stat-icono {
@@ -36,7 +40,7 @@
 .stat-numero {
   font-size: 36px;
   font-weight: bold;
-  color: #667eea;
+  color: #29d4ff;
   margin-bottom: 10px;
 }
 
@@ -53,7 +57,7 @@
 
 .stat-label {
   font-size: 16px;
-  color: #666;
+  color: #ffffff;
   font-weight: 500;
 }
 

@@ -16,14 +16,29 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
   })
 
   const plataformasDisponibles = [
-    'PlayStation 5', 'PlayStation 4', 'Xbox Series X/S', 
+    'PlayStation 5', 'PlayStation 4', 'PlayStation 3', 'Xbox Series X/S', 'Xbox 360',
     'Xbox One', 'Nintendo Switch', 'PC', 'Mobile'
   ]
+const generosDisponibles = [
+  'Acción',
+  'Aventura',
+  'RPG',
+  'Deportes',
+  'Estrategia',
+  'Puzzle',
+  'Terror',
+  'Simulación',
+  'Mundo abierto',
+  'Plataforma',
+  'Shooter',
+  'Roguelike',
+  'Carreras',
+  'Sigilo',
+  'Shooter Looter',
+  'Thriller',
+  'Metroidvania'
+]
 
-  const generosDisponibles = [
-    'Acción', 'Aventura', 'RPG', 'Deportes', 
-    'Estrategia', 'Puzzle', 'Terror', 'Simulación'
-  ]
 
   useEffect(() => {
     if (juegoEditar) {

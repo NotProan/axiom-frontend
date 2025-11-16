@@ -56,6 +56,7 @@ function FiltrosJuegos({ onFiltrar, juegos }) {
           Limpiar
         </button>
       </div>
+      <p className="contador-juegos">Total de juegos: {juegos.length}</p>
 
       <div className="filtro-grupo">
         <label>Plataforma</label>
