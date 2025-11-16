@@ -6,12 +6,12 @@ function Navbar() {
   const location = useLocation()
 
   const handleAgregarJuego = () => {
-    // Si no estás en la página de biblioteca, navega allí primero
-    if (location.pathname !== '/') {
-      navigate('/')
+    if (location.pathname !== '/biblioteca') {
+      navigate('/biblioteca')
     }
-    // Luego dispara un evento para abrir el formulario
-    window.dispatchEvent(new CustomEvent('abrirFormularioJuego'))
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('abrirFormularioJuego'))
+    }, 100)
   }
 
   return (
@@ -23,7 +23,10 @@ function Navbar() {
         
         <ul className="navbar-menu-compact">
           <li>
-            <Link to="/" className="navbar-link-compact">Biblioteca</Link>
+            <Link to="/" className="navbar-link-compact">Inicio</Link>
+          </li>
+          <li>
+            <Link to="/biblioteca" className="navbar-link-compact">Biblioteca</Link>
           </li>
           <li>
             <Link to="/resenas" className="navbar-link-compact">Reseñas</Link>

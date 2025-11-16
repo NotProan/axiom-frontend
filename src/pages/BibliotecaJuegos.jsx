@@ -87,18 +87,11 @@ if (cargando) {
     <div className="biblioteca">
       <div className="biblioteca-header">
         <h1>Biblioteca de Juegos</h1>
-        <button 
-          className="btn-primary"
-          onClick={() => setMostrarFormulario(true)}
-        >
-          Agregar Juego
-        </button>
       </div>
-
       {juegos.length === 0 ? (
         <div className="sin-juegos">
           <p>No tienes juegos en tu biblioteca</p>
-          <p>¡Agrega tu primer juego!</p>
+          <p>Agrega tu primer juego!</p>
         </div>
       ) : (
         <div className="grid-juegos">
