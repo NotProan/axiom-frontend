@@ -1,8 +1,8 @@
 .edit-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgb(33, 150, 243);
+    width: 40px;
+    height: 40px;
+border-radius: 50%;
+  background-color: rgb(7, 186, 199);
   border: none;
   font-weight: 600;
   display: flex;
@@ -11,14 +11,18 @@
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
   cursor: pointer;
   transition-duration: 0.3s;
-  overflow: hidden;
   position: relative;
   text-decoration: none;
+width: 40px;
+  height: 40px;
+  overflow: hidden;
 }
 
 .edit-svgIcon {
-  width: 17px;
+  width: 20px;
+  height: 20px;
   transition-duration: 0.3s;
+  flex-shrink: 0;
 }
 
 .edit-svgIcon path {
@@ -31,12 +35,13 @@
   transition-duration: 0.3s;
   background-color: rgb(33, 150, 243);
   align-items: center;
+  transition-duration: 0,3s;
 }
 
 .edit-button:hover .edit-svgIcon {
   width: 20px;
-  transition-duration: 0.3s;
-  transform: translateY(60%) rotate(360deg);
+  transition-duration: 0.6s;
+  transform: rotate(180deg);
 }
 
 .edit-button::before {
@@ -60,7 +65,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgb(255, 69, 69);
+  background-color: rgb(8, 79, 173);
   border: none;
   font-weight: 600;
   display: flex;
@@ -74,8 +79,9 @@
 }
 
 .delete-svgIcon {
-  width: 12px;
+  width: 15px;
   transition-duration: 0.3s;
+  flex-shrink: 0;
 }
 
 .delete-svgIcon path {
@@ -86,7 +92,7 @@
   width: 140px;
   border-radius: 50px;
   transition-duration: 0.3s;
-  background-color: rgb(255, 69, 69);
+  background-color: rgb(128, 19, 253);
   align-items: center;
 }
 
@@ -145,7 +151,9 @@
   top: 0;
   bottom: 0;
   margin: auto;
+  margin-left: -3px;
   background: #fff;
+  flex-shrink: 0;
 }
 
 .view-circle .view-icon.view-arrow {
@@ -177,7 +185,7 @@
   bottom: 0;
   padding: 0.55rem 0;
   margin: 0 0 0 1.85rem;
-  color: #666;
+  color: #66666600;
   font-weight: 700;
   line-height: 1.6;
   text-align: center;

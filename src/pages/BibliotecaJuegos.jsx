@@ -2,20 +2,24 @@ import { useState, useEffect } from 'react'
 import { juegosAPI } from '../services/api'
 import TarjetaJuego from '../components/TarjetaJuego'
 import FormularioJuego from '../components/FormularioJuego'
-import './BibliotecaJuegos.css'
+import ModalVerJuego from '../components/ModalVerJuego'
 import TextoCargando from '../assets/AnimacionesExtra/TextoCargando'
+import './BibliotecaJuegos.css'
 
 function BibliotecaJuegos() {
   const [juegos, setJuegos] = useState([])
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [juegoEditar, setJuegoEditar] = useState(null)
   const [cargando, setCargando] = useState(true)
+  const [juegoVer, setJuegoVer] = useState(null)
 
+  // Cargar juegos al iniciar
   useEffect(() => {
     cargarJuegos()
   }, [])
-  
-useEffect(() => {
+
+  // Escuchar el evento para abrir formulario
+  useEffect(() => {
     const handleAbrirFormulario = () => {
       setMostrarFormulario(true)
     }
@@ -26,6 +30,10 @@ useEffect(() => {
       window.removeEventListener('abrirFormularioJuego', handleAbrirFormulario)
     }
   }, [])
+
+  // --------------------------
+  //     FUNCIONES CRUD
+  // --------------------------
 
   const cargarJuegos = async () => {
     try {
@@ -79,19 +87,28 @@ useEffect(() => {
     setJuegoEditar(null)
   }
 
-if (cargando) {
-  return <TextoCargando texto="Cargando biblioteca, espera un segundo..." />
-}
+  const handleVer = (juego) => {
+    setJuegoVer(juego)
+  }
+
+  // --------------------------
+  //     RENDER
+  // --------------------------
+
+  if (cargando) {
+    return <TextoCargando texto="Cargando biblioteca, espera un segundo..." />
+  }
 
   return (
     <div className="biblioteca">
       <div className="biblioteca-header">
-        <h1>Tu Biblioteca</h1>
+        <h1>Mi Biblioteca de Juegos</h1>
       </div>
+
       {juegos.length === 0 ? (
         <div className="sin-juegos">
           <p>No tienes juegos en tu biblioteca</p>
-          <p>Agrega tu primer juego!</p>
+          <p>Agrega tu primer juego</p>
         </div>
       ) : (
         <div className="grid-juegos">
@@ -101,6 +118,7 @@ if (cargando) {
               juego={juego}
               onEliminar={handleEliminar}
               onEditar={handleEditar}
+              onVer={handleVer}
             />
           ))}
         </div>
@@ -111,6 +129,13 @@ if (cargando) {
           juegoEditar={juegoEditar}
           onGuardar={handleGuardar}
           onCancelar={handleCancelar}
+        />
+      )}
+
+      {juegoVer && (
+        <ModalVerJuego
+          juego={juegoVer}
+          onCerrar={() => setJuegoVer(null)}
         />
       )}
     </div>
