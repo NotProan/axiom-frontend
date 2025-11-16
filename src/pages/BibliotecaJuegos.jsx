@@ -5,6 +5,7 @@ import FormularioJuego from '../components/FormularioJuego'
 import ModalVerJuego from '../components/ModalVerJuego'
 import TextoCargando from '../assets/AnimacionesExtra/TextoCargando'
 import './BibliotecaJuegos.css'
+import FiltrosJuegos from '../components/FiltrosJuegos'
 
 function BibliotecaJuegos() {
   const [juegos, setJuegos] = useState([])
@@ -12,13 +13,14 @@ function BibliotecaJuegos() {
   const [juegoEditar, setJuegoEditar] = useState(null)
   const [cargando, setCargando] = useState(true)
   const [juegoVer, setJuegoVer] = useState(null)
+const [juegosFiltrados, setJuegosFiltrados] = useState([])
 
-  // Cargar juegos al iniciar
+
   useEffect(() => {
     cargarJuegos()
   }, [])
 
-  // Escuchar el evento para abrir formulario
+  
   useEffect(() => {
     const handleAbrirFormulario = () => {
       setMostrarFormulario(true)
@@ -31,15 +33,12 @@ function BibliotecaJuegos() {
     }
   }, [])
 
-  // --------------------------
-  //     FUNCIONES CRUD
-  // --------------------------
-
   const cargarJuegos = async () => {
     try {
       setCargando(true)
       const response = await juegosAPI.obtenerTodos()
       setJuegos(response.data)
+      setJuegosFiltrados(response.data)
     } catch (error) {
       console.error('Error al cargar juegos:', error)
       alert('Error al cargar los juegos')
@@ -47,6 +46,47 @@ function BibliotecaJuegos() {
       setCargando(false)
     }
   }
+  const aplicarFiltros = (filtros) => {
+  let resultado = [...juegos]
+
+  if (filtros.plataforma) {
+    resultado = resultado.filter(j => 
+      j.plataforma?.includes(filtros.plataforma)
+    )
+  }
+
+  if (filtros.genero) {
+    resultado = resultado.filter(j => 
+      j.genero?.includes(filtros.genero)
+    )
+  }
+
+  if (filtros.anio) {
+    resultado = resultado.filter(j => 
+      j.anio === parseInt(filtros.anio)
+    )
+  }
+
+  if (filtros.horasMin) {
+    resultado = resultado.filter(j => 
+      (j.horasJugadas || 0) >= parseInt(filtros.horasMin)
+    )
+  }
+
+  if (filtros.horasMax) {
+    resultado = resultado.filter(j => 
+      (j.horasJugadas || 0) <= parseInt(filtros.horasMax)
+    )
+  }
+
+  if (filtros.estrellas) {
+    resultado = resultado.filter(j => 
+      j.puntuacion === filtros.estrellas
+    )
+  }
+
+  setJuegosFiltrados(resultado)
+}
 
   const handleGuardar = async (juego) => {
     try {
@@ -91,55 +131,58 @@ function BibliotecaJuegos() {
     setJuegoVer(juego)
   }
 
-  // --------------------------
-  //     RENDER
-  // --------------------------
+
 
   if (cargando) {
-    return <TextoCargando texto="Cargando biblioteca, espera un segundo..." />
-  }
+  return <TextoCargando texto="Cargando biblioteca, espera un segundo..." />
+}
 
-  return (
-    <div className="biblioteca">
-      <div className="biblioteca-header">
-        <h1>Mi Biblioteca de Juegos</h1>
-      </div>
-
-      {juegos.length === 0 ? (
-        <div className="sin-juegos">
-          <p>No tienes juegos en tu biblioteca</p>
-          <p>Agrega tu primer juego</p>
-        </div>
-      ) : (
-        <div className="grid-juegos">
-          {juegos.map(juego => (
-            <TarjetaJuego
-              key={juego._id}
-              juego={juego}
-              onEliminar={handleEliminar}
-              onEditar={handleEditar}
-              onVer={handleVer}
-            />
-          ))}
-        </div>
-      )}
-
-      {mostrarFormulario && (
-        <FormularioJuego
-          juegoEditar={juegoEditar}
-          onGuardar={handleGuardar}
-          onCancelar={handleCancelar}
-        />
-      )}
-
-      {juegoVer && (
-        <ModalVerJuego
-          juego={juegoVer}
-          onCerrar={() => setJuegoVer(null)}
-        />
-      )}
+return (
+  <div className="biblioteca">
+    <div className="biblioteca-header">
+      <h1>Mi Biblioteca de Juegos</h1>
     </div>
-  )
+
+    <div className="biblioteca-contenido">
+      <FiltrosJuegos onFiltrar={aplicarFiltros} juegos={juegos} />
+
+      <div className="biblioteca-juegos">
+        {juegosFiltrados.length === 0 ? (
+          <div className="sin-juegos">
+            <p>No se encontraron juegos con esos filtros</p>
+          </div>
+        ) : (
+          <div className="grid-juegos">
+            {juegosFiltrados.map(juego => (
+              <TarjetaJuego
+                key={juego._id}
+                juego={juego}
+                onEliminar={handleEliminar}
+                onEditar={handleEditar}
+                onVer={handleVer}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    {mostrarFormulario && (
+      <FormularioJuego
+        juegoEditar={juegoEditar}
+        onGuardar={handleGuardar}
+        onCancelar={handleCancelar}
+      />
+    )}
+
+    {juegoVer && (
+      <ModalVerJuego
+        juego={juegoVer}
+        onCerrar={() => setJuegoVer(null)}
+      />
+    )}
+  </div>
+)
 }
 
 export default BibliotecaJuegos

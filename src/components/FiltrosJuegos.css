@@ -1,0 +1,142 @@
+.filtros-container {
+  width: 240px; /* ANCHO DEL PANEL (cámbialo aquí) */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.filtros-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filtros-header h3 {
+  color: white;
+  font-size: 18px;
+  margin: 0;
+}
+
+.btn-limpiar {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-limpiar:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.filtro-grupo {
+  margin-bottom: 20px;
+}
+
+.filtro-grupo label {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.filtro-grupo select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filtro-grupo select:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.filtro-grupo select:focus {
+  outline: none;
+  border-color: rgba(102, 126, 234, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.filtro-grupo select option {
+  background: #1a1a2e;
+  color: white;
+}
+
+.filtro-rango {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filtro-rango input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.filtro-rango input:focus {
+  outline: none;
+  border-color: rgba(102, 126, 234, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.filtro-rango span {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.filtro-estrellas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.estrella-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #888;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  text-align: left;
+}
+
+.estrella-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFD700;
+}
+
+.estrella-btn.activa {
+  background: rgba(102, 126, 234, 0.3);
+  border-color: rgba(102, 126, 234, 0.8);
+  color: #FFD700;
+}
+
+@media (max-width: 968px) {
+  .filtros-container {
+    width: 100%;
+    position: relative;
+    top: 0;
+    margin-bottom: 20px;
+  }
+}
