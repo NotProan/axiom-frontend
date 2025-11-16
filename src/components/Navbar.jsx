@@ -18,7 +18,7 @@ function Navbar() {
     <nav className="navbar-compact">
       <div className="navbar-container-compact">
         <Link to="/" className="navbar-logo-compact">
-          GAMETRACKER
+          AXIOM
         </Link>
         
         <ul className="navbar-menu-compact">

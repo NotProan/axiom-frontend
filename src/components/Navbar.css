@@ -14,7 +14,7 @@
   align-items: center;
   height: 60px;
   padding: 0 30px;
-  background: rgba(4, 38, 139, 0.342);
+  background: rgba(11, 18, 39, 0.342);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -27,8 +27,9 @@
   font-weight: 700;
   color: white;
   text-decoration: none;
-  letter-spacing: 1px;
+  letter-spacing: 3px;
   transition: opacity 0.3s ease;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
 .navbar-logo-compact:hover {
