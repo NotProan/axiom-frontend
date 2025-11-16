@@ -3,7 +3,6 @@ import "./ModalVerJuego.css";
 
 function ModalVerJuego({ juego, onCerrar }) {
   const [cerrando, setCerrando] = useState(false);
-
   if (!juego) return null;
 
   const handleCerrar = () => {
@@ -11,11 +10,15 @@ function ModalVerJuego({ juego, onCerrar }) {
     setTimeout(() => onCerrar(), 300); 
   };
 
-  const renderEstrellas = (puntuacion) => {
-    const llenas = '★'.repeat(puntuacion || 0)
-    const vacias = '☆'.repeat(5 - (puntuacion || 0))
-    return llenas + vacias
-  }
+  const renderPuntuacion = (puntuacion) => {
+  return (
+    <div className="badge-puntuacion-modal">
+      <span className="estrella-modal">★</span>
+      <span className="numero-modal">{(puntuacion || 0).toFixed(1)}</span>
+      <span className="max-modal">/10</span>
+    </div>
+  )
+}
 
   return (
     <div
@@ -73,7 +76,7 @@ function ModalVerJuego({ juego, onCerrar }) {
               
               <div className="modal-info-item">
                 <strong>Puntuación</strong>
-                <p className="modal-estrellas">{renderEstrellas(juego.puntuacion)}</p>
+                <p className="modal-estrellas">{renderPuntuacion(juego.puntuacion)}</p>
               </div>
             </div>
 

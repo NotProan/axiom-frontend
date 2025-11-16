@@ -79,12 +79,17 @@ const [juegosFiltrados, setJuegosFiltrados] = useState([])
     )
   }
 
-  if (filtros.estrellas) {
-    resultado = resultado.filter(j => 
-      j.puntuacion === filtros.estrellas
-    )
-  }
+  if (filtros.puntuacionMin) {
+  resultado = resultado.filter(j => 
+    (j.puntuacion || 0) >= parseFloat(filtros.puntuacionMin)
+  )
+}
 
+if (filtros.puntuacionMax) {
+  resultado = resultado.filter(j => 
+    (j.puntuacion || 0) <= parseFloat(filtros.puntuacionMax)
+  )
+}
   setJuegosFiltrados(resultado)
 }
 

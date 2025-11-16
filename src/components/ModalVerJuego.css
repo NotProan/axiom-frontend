@@ -137,10 +137,31 @@
   font-size: 16px;
   color: white;
 }
+.badge-puntuacion-modal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(12, 37, 150, 0.253);
+  padding: 8px 16px;
+  border-radius: 10px;
+  justify-content: center;
+  text-align: center;
+}
 
-.modal-estrellas {
-  font-size: 20px;
-  color: #FFD700;
+.estrella-modal {
+  color: #00aeff;
+  font-size: 24px;
+}
+
+.numero-modal {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.max-modal {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 18px;
 }
 
 .modal-descripcion {

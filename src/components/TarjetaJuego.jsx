@@ -53,9 +53,13 @@ function TarjetaJuego({ juego, onEliminar, onEditar, onVer }) {
             <p><strong>Desarrollador:</strong> {juego.desarrollador || 'N/A'}</p>
           </div>
 
-          <div className="puntuacion-horizontal">
-            {renderEstrellas(juego.puntuacion)}
-          </div>
+          <div className="badge-puntuacion">
+  <span className="estrella-icono-badge">★</span>
+  <span className="puntuacion-numero">
+    {(juego.puntuacion || 0).toFixed(1)}
+  </span>
+  <span className="puntuacion-max">/10</span>
+</div>
 
           <p className="horas-horizontal">{juego.horasJugadas}h jugadas</p>
         </div>

@@ -8,7 +8,8 @@ function FiltrosJuegos({ onFiltrar, juegos }) {
     genero: '',
     horasMin: '',
     horasMax: '',
-    estrellas: ''
+    puntuacionMin: '',
+    puntuacionMax: ''
   })
 
   // Extraer opciones únicas de los juegos
@@ -40,7 +41,8 @@ function FiltrosJuegos({ onFiltrar, juegos }) {
       genero: '',
       horasMin: '',
       horasMax: '',
-      estrellas: ''
+      puntuacionMin: '',
+      puntuacionMax: ''
     }
     setFiltros(filtrosVacios)
     onFiltrar(filtrosVacios)
@@ -115,21 +117,41 @@ function FiltrosJuegos({ onFiltrar, juegos }) {
         </div>
       </div>
 
-      <div className="filtro-grupo">
-        <label>Puntuación</label>
-        <div className="filtro-estrellas">
-          {[1, 2, 3, 4, 5].map(num => (
-            <button
-              key={num}
-              className={`estrella-btn ${filtros.estrellas === num ? 'activa' : ''}`}
-              onClick={() => handleChange('estrellas', filtros.estrellas === num ? '' : num)}
-            >
-              {'★'.repeat(num)}
-            </button>
-          ))}
-        </div>
+  <div className="filtro-grupo">
+    <label>Puntuación</label>
+    <div className="filtro-puntuacion-rango">
+      <div className="puntuacion-input-wrapper">
+        <span className="label-min">Min.</span>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          placeholder="0.0"
+          value={filtros.puntuacionMin}
+          onChange={(e) => handleChange('puntuacionMin', e.target.value)}
+        />
+      </div>
+      <span className="separador">-</span>
+      <div className="puntuacion-input-wrapper">
+        <span className="label-max">Max.</span>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          placeholder="10.0"
+          value={filtros.puntuacionMax}
+          onChange={(e) => handleChange('puntuacionMax', e.target.value)}
+        />
       </div>
     </div>
+    <div className="badge-puntuacion-ejemplo">
+      <span className="estrella-ejemplo">★</span>
+      <span>1.0 - 10.0</span>
+    </div>
+  </div>
+</div>
   )
 }
 

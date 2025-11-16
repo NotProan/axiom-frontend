@@ -159,12 +159,13 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
           </div>
 
           <div className="form-group">
-            <label>Puntuación (1-5)</label>
+            <label>Puntuación (1.0 - 10.0)</label>
             <input
               type="number"
               name="puntuacion"
-              min="0"
-              max="5"
+              min="1"
+               max="10"
+              step="0.1"
               value={formData.puntuacion}
               onChange={handleChange}
             />

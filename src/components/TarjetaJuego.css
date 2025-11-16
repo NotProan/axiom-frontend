@@ -90,11 +90,31 @@
 .info-grid strong {
   color: white;
 }
+.badge-puntuacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(90deg, rgba(16, 9, 143, 0.507), rgba(15, 3, 59, 0.575));
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+  border: #1f00504d 1px solid;
+}
 
-.puntuacion-horizontal {
-  font-size: 16px;
-  color: #FFD700;
-  margin-bottom: 6px;
+.estrella-icono-badge {
+  color: #00ffd5;
+  font-size: 18px;
+}
+
+.puntuacion-numero {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.puntuacion-max {
+  color: rgba(255, 255, 255, 0.459);
+  font-size: 14px;
 }
 
 .horas-horizontal {
