@@ -10,7 +10,9 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
     completado: false,
     puntuacion: 0,
     horasJugadas: 0,
-    descripcion: ''
+    descripcion: '',
+    anio: new Date().getFullYear(),
+    desarrollador: ''
   })
 
   const plataformasDisponibles = [
@@ -29,10 +31,10 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
         ...juegoEditar,
         plataforma: Array.isArray(juegoEditar.plataforma) 
           ? juegoEditar.plataforma 
-          : [juegoEditar.plataforma],
+          : juegoEditar.plataforma.split(', '),
         genero: Array.isArray(juegoEditar.genero) 
           ? juegoEditar.genero 
-          : [juegoEditar.genero]
+          : juegoEditar.genero.split(', ')
       })
     }
   }, [juegoEditar])
@@ -77,7 +79,6 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
         </h2>
 
         <form onSubmit={handleSubmit} className="formulario-grid">
-          {/* Fila 1 */}
           <div className="form-group">
             <label>Título</label>
             <input
@@ -101,7 +102,30 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
             />
           </div>
 
-          {/* Fila 2 - Plataformas */}
+          <div className="form-group">
+            <label>Año</label>
+            <input
+              type="number"
+              name="anio"
+              min="1970"
+              max={new Date().getFullYear() + 5}
+              value={formData.anio}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Desarrollador</label>
+            <input
+              type="text"
+              name="desarrollador"
+              value={formData.desarrollador}
+              onChange={handleChange}
+              placeholder="Ej: Naughty Dog"
+            />
+          </div>
+
           <div className="form-group form-group-full">
             <label>Plataformas</label>
             <div className="multi-select-container">
@@ -118,7 +142,6 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
             </div>
           </div>
 
-          {/* Fila 3 - Géneros */}
           <div className="form-group form-group-full">
             <label>Géneros</label>
             <div className="multi-select-container">
@@ -135,7 +158,6 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
             </div>
           </div>
 
-          {/* Fila 4 */}
           <div className="form-group">
             <label>Puntuación (1-5)</label>
             <input
@@ -159,7 +181,6 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
             />
           </div>
 
-          {/* Fila 5 - Descripción */}
           <div className="form-group form-group-full">
             <label>Descripción</label>
             <textarea
@@ -171,7 +192,6 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
             />
           </div>
 
-          {/* Checkbox */}
           <div className="form-group form-group-full">
             <label className="checkbox-container">
               <input
@@ -180,11 +200,10 @@ function FormularioJuego({ juegoEditar, onGuardar, onCancelar }) {
                 checked={formData.completado}
                 onChange={handleChange}
               />
-              <span>Juego completado?</span>
+              <span>Juego completado</span>
             </label>
           </div>
 
-          {/* Botones */}
           <div className="form-actions">
             <button type="submit" className="btn-submit-acrylic">
               {juegoEditar ? 'Guardar Cambios' : 'Agregar Juego'}

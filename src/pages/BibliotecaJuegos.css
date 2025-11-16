@@ -3,16 +3,17 @@
 }
 
 .biblioteca-header {
+  margin-left: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
   gap: 15px;
 }
 
 .biblioteca-header h1 {
-  font-size: 32px;
+  font-size: 40px;
 }
 
 .grid-juegos {

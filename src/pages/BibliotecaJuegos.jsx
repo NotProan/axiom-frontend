@@ -86,7 +86,7 @@ if (cargando) {
   return (
     <div className="biblioteca">
       <div className="biblioteca-header">
-        <h1>Biblioteca de Juegos</h1>
+        <h1>Tu Biblioteca</h1>
       </div>
       {juegos.length === 0 ? (
         <div className="sin-juegos">
