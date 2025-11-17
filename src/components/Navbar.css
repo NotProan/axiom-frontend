@@ -4,6 +4,9 @@
   position: sticky;
   top: 0;
   z-index: 999;
+  opacity: 0;
+  animation: navbarFadeIn 2s ease forwards;
+
 }
 
 .navbar-container-compact {
@@ -14,7 +17,7 @@
   align-items: center;
   height: 60px;
   padding: 0 30px;
-  background: rgba(11, 18, 39, 0.342);
+  background: rgba(4, 21, 70, 0.363);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -121,6 +124,17 @@
     font-size: 12px;
   }
 }
+@keyframes navbarFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 @media (max-width: 480px) {
   .navbar-menu-compact {

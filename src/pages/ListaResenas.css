@@ -1,77 +1,277 @@
 .lista-resenas {
-  padding: 20px 0;
+  padding: clamp(24px, 4vw, 60px);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: #f3f4ff;
+}
+
+.resenas-hero {
+  background: linear-gradient(125deg, rgba(19, 24, 84, 0.8), rgba(118, 75, 162, 0.7));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  padding: clamp(20px, 4vw, 40px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 30px 80px rgba(5, 4, 35, 0.45);
 }
 
 .resenas-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
   flex-wrap: wrap;
   gap: 15px;
+  padding: 0 6px;
 }
 
 .resenas-header h1 {
   font-size: 32px;
+  color: #fff;
+  margin: 0;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero-subtitle {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero-title {
+  font-size: clamp(28px, 4vw, 42px);
+  color: #fff;
+  margin: 0;
+}
+
+.hero-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.hero-actions button {
+  min-width: 180px;
+}
+
+.hero-hint {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-card span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.stat-card strong {
+  font-size: 28px;
+  color: #fff;
+}
+
+.resenas-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: rgba(16, 22, 63, 0.85);
+  border-radius: 20px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.search-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.search-field input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 15px;
+}
+
+.search-field input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-field input:focus {
+  outline: none;
+}
+
+.resenas-toolbar .btn-secondary {
+  min-width: 180px;
+  background: rgba(118, 75, 162, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .resenas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
 }
 
 .tarjeta-resena {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
+  background: linear-gradient(150deg, rgba(18, 26, 67, 0.9), rgba(65, 33, 98, 0.85));
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px rgba(3, 1, 31, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .tarjeta-resena:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(5, 3, 45, 0.55);
 }
 
 .resena-header {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
   align-items: flex-start;
-  margin-bottom: 10px;
-  gap: 10px;
+}
+
+.resena-header-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .resena-header h3 {
-  color: #333;
   margin: 0;
-  font-size: 20px;
-  flex: 1;
+  font-size: 22px;
+  color: #fff;
+}
+
+.resena-juego-subtitle {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.resena-juego {
+  margin: 0;
+  color: #8ac4ff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.resena-score {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.resena-score span {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+}
+
+.resena-score small {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .resena-puntuacion {
   font-size: 18px;
-  white-space: nowrap;
+  color: #ffd369;
+  align-self: center;
 }
 
-.resena-juego {
-  color: #667eea;
-  font-weight: bold;
-  margin-bottom: 15px;
-  font-size: 16px;
+.resena-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.meta-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.meta-pill.ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .resena-contenido {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 15px;
-  text-align: justify;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.65;
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.resena-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .resena-fecha {
-  color: #999;
+  margin: 0;
   font-size: 14px;
-  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .resena-acciones {
@@ -81,32 +281,41 @@
 
 .resena-acciones button {
   flex: 1;
-  padding: 8px;
-  font-size: 14px;
+  min-width: 120px;
 }
 
 .sin-resenas {
   text-align: center;
-  color: white;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
   padding: 60px 20px;
-  font-size: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sin-resenas.sin-resenas-filtro {
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .sin-resenas p {
-  margin: 10px 0;
+  margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
-  .resenas-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .resenas-header {
+  .resena-footer {
     flex-direction: column;
     align-items: stretch;
   }
-  
-  .resenas-header h1 {
-    font-size: 24px;
+
+  .resena-acciones {
+    flex-direction: column;
+  }
+
+  .resenas-toolbar {
+    flex-direction: column;
+  }
+
+  .resenas-toolbar .btn-secondary {
+    width: 100%;
   }
 }

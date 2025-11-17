@@ -1,4 +1,5 @@
-.formulario-overlay-acrylic {
+.formulario-overlay-acrylic,
+.formulario-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -61,8 +62,15 @@
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
+.legacy-label span {
+  display: block;
+  margin-bottom: 6px;
+  color: white;
+}
+
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(5, 14, 95, 0.384);
   border-radius: 8px;
@@ -73,7 +81,8 @@
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(102, 126, 234, 0.8);
@@ -177,6 +186,16 @@
   transform: translateY(-2px);
 }
 
+.rating-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-input-wrapper input {
+  flex: 1;
+}
+
 /* Scrollbar personalizado */
 .formulario-container-acrylic::-webkit-scrollbar {
   width: 8px;
@@ -194,6 +213,26 @@
 
 .formulario-container-acrylic::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.13);
+}
+
+.formulario-resena .formulario-titulo {
+  margin-bottom: 5px;
+}
+
+.formulario-resena-grid {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.formulario-resena .rating-helper {
+  display: inline-block;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 4px;
+}
+
+.formulario-resena textarea {
+  min-height: 150px;
 }
 
 /* Responsive */
