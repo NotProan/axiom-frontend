@@ -1,9 +1,13 @@
 .lista-resenas {
   padding: clamp(24px, 4vw, 60px);
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
   color: #f3f4ff;
+}
+
+.resenas-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: flex-start;
 }
 
 .resenas-hero {
@@ -11,11 +15,27 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 28px;
   padding: clamp(20px, 4vw, 40px);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
   backdrop-filter: blur(18px);
   box-shadow: 0 30px 80px rgba(5, 4, 35, 0.45);
+  position: sticky;
+  top: clamp(80px, 8vh, 120px);
+  align-self: flex-start;
+  height: fit-content;
+  z-index: 2;
+}
+
+.resenas-main {
+  background: rgba(11, 15, 45, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  padding: clamp(20px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
 }
 
 .resenas-header {
@@ -24,13 +44,21 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 15px;
-  padding: 0 6px;
+  padding: 0;
 }
 
 .resenas-header h1 {
   font-size: 32px;
   color: #fff;
   margin: 0;
+}
+
+.resenas-eyebrow {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 6px;
 }
 
 .hero-copy {
@@ -75,8 +103,8 @@
 }
 
 .hero-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
@@ -100,25 +128,40 @@
   color: #fff;
 }
 
+.stat-card small {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 1px;
+}
+
 .resenas-toolbar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  background: rgba(16, 22, 63, 0.85);
-  border-radius: 20px;
-  padding: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  align-items: center;
+  background: linear-gradient(110deg, rgba(34, 52, 138, 0.85), rgba(67, 28, 131, 0.8));
+  border-radius: 18px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  gap: 16px;
+  flex-wrap: nowrap;
 }
 
 .search-field {
-  flex: 1;
+  flex: 0 1 auto;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  padding: 10px 18px;
+  border-radius: 14px;
+  padding: 6px 12px;
   border: 1px solid rgba(255, 255, 255, 0.15);
+  min-height: 44px;
+}
+
+.search-field-compact {
+  flex-basis: 32%;
+  min-width: 200px;
+  max-width: 320px;
 }
 
 .search-field input {
@@ -129,6 +172,44 @@
   font-size: 15px;
 }
 
+.filters-grid {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  flex: 1;
+}
+
+.filter-field select,
+.filter-field input {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(7, 9, 35, 0.4);
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.filter-field select:focus,
+.filter-field input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.keyword-field input {
+  border-radius: 12px;
+}
+
 .search-field input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
@@ -137,16 +218,10 @@
   outline: none;
 }
 
-.resenas-toolbar .btn-secondary {
-  min-width: 180px;
-  background: rgba(118, 75, 162, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
 .resenas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .tarjeta-resena {
@@ -217,16 +292,71 @@
 }
 
 .resena-score small {
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.6);
+  text-transform: none;
+  letter-spacing: 1px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .resena-puntuacion {
   font-size: 18px;
   color: #ffd369;
   align-self: center;
+}
+
+.resena-juego-detalle {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.resena-juego-portada {
+  width: 120px;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+.resena-juego-portada img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.resena-juego-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.resena-juego-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.resena-juego-meta-item span {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.resena-juego-meta-item strong {
+  font-size: 15px;
+  color: #fff;
 }
 
 .resena-meta {
@@ -246,6 +376,30 @@
 .meta-pill.ghost {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.btn-resena {
+  background: linear-gradient(90deg, #797a7aaf, #8686865e);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.6s ease;
+  animation-duration: 1s;
+  transition: transform 0.5s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.904);
+}
+.btn-resena:hover {
+  background: linear-gradient(90deg, #0888ff9c, #5b1fe798);
+  translate: (10px, 0);
+  animation-duration: 1s;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  border-color: #0888ff9c;
+  box-shadow: 0 6px 15px rgba(8, 136, 255, 0.6);
 }
 
 .resena-contenido {
@@ -301,7 +455,31 @@
   margin-bottom: 10px;
 }
 
+@media (max-width: 1200px) {
+  .resenas-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .filters-grid {
+    flex-wrap: wrap;
+  }
+
+  .filter-field {
+    flex: 1 1 calc(50% - 8px);
+  }
+}
+
+@media (max-width: 900px) {
+  .resenas-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
+  .resenas-layout {
+    grid-template-columns: 1fr;
+  }
+
   .resena-footer {
     flex-direction: column;
     align-items: stretch;
@@ -313,9 +491,57 @@
 
   .resenas-toolbar {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .resenas-toolbar .btn-secondary {
+  .filters-grid {
     width: 100%;
+    flex-direction: column;
+  }
+
+  .filter-field {
+    flex-basis: 100%;
+  }
+
+  .search-field-compact {
+    flex-basis: 100%;
+    max-width: none;
+    min-width: auto;
+  }
+
+  .resena-juego-detalle {
+    grid-template-columns: 1fr;
+  }
+
+  .resena-juego-portada {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  .resena-juego-meta-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .resenas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .resenas-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .resenas-hero {
+    position: static;
+    top: auto;
   }
 }
