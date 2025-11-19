@@ -1,9 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
 import { resenasAPI, juegosAPI } from '../services/api'
 import FormularioResena from '../components/FormularioResena'
+import { BotonEliminar, BotonEditar } from '../assets/AnimacionesExtra/BotonesTarjeta'
 import './ListaResenas.css'
+import { crearMapaJuegos, enriquecerResenasConJuego } from '../utils/juegoHelpers'
 
-const PORTADA_POR_DEFECTO = 'https://via.placeholder.com/200x280?text=Sin+Portada'
+// --- IMAGEN BASE64 PARA PORTADA POR DEFECTO ---
+const PORTADA_POR_DEFECTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='280' viewBox='0 0 200 280'%3E%3Crect width='200' height='280' fill='%232d3748'/%3E%3Ctext x='50%25' y='50%25' fill='%23a0aec0' font-size='14' font-family='Arial' text-anchor='middle' dominant-baseline='middle'%3ESin+Portada%3C/text%3E%3C/svg%3E";
 
 const convertirPuntuacionA10 = (valor) => {
   const numero = Number(valor)
@@ -20,85 +23,13 @@ const normalizarPuntuacionParaAPI = (valor) => {
   return numero
 }
 
-const normalizarColeccionDeJuego = (valor) => {
-  if (!valor) return []
-  if (Array.isArray(valor)) {
-    return valor.filter(Boolean)
-  }
-  if (typeof valor === 'string') {
-    return valor
-      .split(',')
-      .map(item => item.trim())
-      .filter(Boolean)
-  }
-  return []
-}
-
-const obtenerNumeroSeguro = (valor) => {
-  const numero = Number(valor)
-  return Number.isFinite(numero) ? numero : null
-}
-
-const esObjetoPlano = (valor) => Boolean(valor) && typeof valor === 'object' && !Array.isArray(valor)
-
-const limpiarPosibleId = (valor) => {
-  if (!valor) return ''
-  if (typeof valor === 'string') return valor
-  if (typeof valor === 'number') return String(valor)
-  if (typeof valor === 'object') {
-    if (valor.$oid) return valor.$oid
-    if (typeof valor.toString === 'function') return valor.toString()
-  }
-  return ''
-}
-
-const obtenerPrimerValor = (...valores) => {
-  for (const valor of valores) {
-    if (valor !== undefined && valor !== null && valor !== '') {
-      return valor
-    }
-  }
-  return undefined
-}
-
-const obtenerJuegoRelacionado = (resena, juegos) => {
-  if (esObjetoPlano(resena.juego)) {
-    return resena.juego
-  }
-
-  const posiblesIds = [
-    resena.juegoId,
-    resena.juego?._id,
-    resena.juego?._id?.$oid,
-    resena.juego?._id?.toString?.()
-  ]
-    .map(limpiarPosibleId)
-    .filter(Boolean)
-
-  for (const id of posiblesIds) {
-    const juegoEncontrado = juegos.find(j => j._id === id)
-    if (juegoEncontrado) {
-      return juegoEncontrado
-    }
-  }
-
-  if (typeof resena.juego === 'string') {
-    const juegoPorNombre = juegos.find(
-      j => j.titulo?.toLowerCase() === resena.juego.toLowerCase()
-    )
-    if (juegoPorNombre) {
-      return juegoPorNombre
-    }
-  }
-
-  return null
-}
-
 function ListaResenas() {
   const [resenas, setResenas] = useState([])
   const [juegos, setJuegos] = useState([])
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [resenaEditar, setResenaEditar] = useState(null)
+  const [cargando, setCargando] = useState(true)
+  const [resenasFiltradas, setResenasFiltradas] = useState([])
 
   const [busqueda, setBusqueda] = useState('')
   const [filtroPlataforma, setFiltroPlataforma] = useState('')
@@ -110,16 +41,35 @@ function ListaResenas() {
     cargarDatos()
   }, [])
 
+  useEffect(() => {
+    const handleAbrirFormulario = () => {
+      setMostrarFormulario(true)
+    }
+
+    window.addEventListener('abrirFormularioResena', handleAbrirFormulario)
+
+    return () => {
+      window.removeEventListener('abrirFormularioResena', handleAbrirFormulario)
+    }
+  }, [])
+
   const cargarDatos = async () => {
     try {
-      const [resenasRes, juegosRes] = await Promise.all([
-        resenasAPI.obtenerTodas(),
-        juegosAPI.obtenerTodos()
+      setCargando(true)
+      const [juegosResponse, resenasResponse] = await Promise.all([
+        juegosAPI.obtenerTodos(),
+        resenasAPI.obtenerTodas()
       ])
-      setResenas(resenasRes.data)
-      setJuegos(juegosRes.data)
+      
+      setJuegos(juegosResponse.data)
+      setResenas(resenasResponse.data)
+      setResenasFiltradas(resenasResponse.data)
+      console.log(resenasResponse.data)
     } catch (error) {
       console.error('Error al cargar datos:', error)
+      alert('Error al cargar reseñas y juegos')
+    } finally {
+      setCargando(false)
     }
   }
 
@@ -169,191 +119,60 @@ function ListaResenas() {
     setResenaEditar(null)
   }
 
-  const resenasEnriquecidas = useMemo(() => {
-    return resenas.map(resena => {
-      const juegoRelacionado = obtenerJuegoRelacionado(resena, juegos)
-      const plataformas = normalizarColeccionDeJuego(
-        juegoRelacionado?.plataformas ||
-        juegoRelacionado?.plataforma ||
-        resena.plataformas ||
-        resena.plataforma ||
-        resena.juegoPlataforma
+  const juegoMap = useMemo(() => crearMapaJuegos(juegos), [juegos])
+  const resenasEnriquecidas = useMemo(
+    () => enriquecerResenasConJuego(resenas, juegoMap),
+    [resenas, juegoMap]
+  )
+
+  const aplicarFiltros = () => {
+    let resultado = [...resenasEnriquecidas]
+    
+    const termino = busqueda.trim().toLowerCase()
+    if (termino) {
+      resultado = resultado.filter(resena => {
+        const titulo = String(resena.titulo || '').toLowerCase()
+        const juegoTitulo = String(resena.juegoTitulo || '').toLowerCase()
+        const contenido = String(resena.contenido || '').toLowerCase()
+        return titulo.includes(termino) || juegoTitulo.includes(termino) || contenido.includes(termino)
+      })
+    }
+    
+    if (filtroPlataforma) {
+      resultado = resultado.filter(resena => 
+        resena.juegoPlataforma.toLowerCase().includes(filtroPlataforma.toLowerCase())
       )
-      const generos = normalizarColeccionDeJuego(
-        juegoRelacionado?.generos ||
-        juegoRelacionado?.genero ||
-        resena.generos ||
-        resena.genero ||
-        resena.juegoGenero
+    }
+    
+    if (filtroGenero) {
+      resultado = resultado.filter(resena => 
+        resena.juegoGenero.toLowerCase().includes(filtroGenero.toLowerCase())
       )
-      const horasJugadas = obtenerNumeroSeguro(
-        obtenerPrimerValor(
-          juegoRelacionado?.horasJugadas,
-          resena.juegoHorasJugadas,
-          resena.horasJugadasJuego,
-          resena.horasJuego
-        )
-      )
-      const puntuacionJuego = obtenerNumeroSeguro(
-        obtenerPrimerValor(
-          juegoRelacionado?.puntuacion,
-          resena.juegoPuntuacion,
-          resena.puntuacionJuego
-        )
-      )
+    }
+    
+    if (filtroPuntuacion) {
+      const puntuacionMin = Number(filtroPuntuacion)
+      resultado = resultado.filter(resena => resena.puntuacion10 >= puntuacionMin)
+    }
+    
+    setResenasFiltradas(resultado)
+  }
 
-      const juegoTitulo = obtenerPrimerValor(
-        juegoRelacionado?.titulo,
-        resena.juegoTitulo,
-        resena.tituloJuego,
-        resena.nombreJuego
-      ) || 'Juego no encontrado'
+  useEffect(() => {
+    aplicarFiltros()
+  }, [busqueda, filtroPlataforma, filtroGenero, filtroPuntuacion, resenasEnriquecidas])
 
-      const juegoPortada = obtenerPrimerValor(
-        juegoRelacionado?.portada,
-        resena.juegoPortada,
-        resena.portadaJuego
-      ) || ''
-
-      const juegoAnio = obtenerPrimerValor(
-        juegoRelacionado?.anio,
-        resena.juegoAnio,
-        resena.anioJuego
-      ) || ''
-
-      const juegoDesarrollador = obtenerPrimerValor(
-        juegoRelacionado?.desarrollador,
-        resena.juegoDesarrollador,
-        resena.desarrolladorJuego
-      ) || ''
-
-      const plataformaTexto = plataformas.length
-        ? plataformas.join(', ')
-        : (obtenerPrimerValor(resena.plataforma, resena.juegoPlataforma) || 'Plataforma desconocida')
-
-      const generoTexto = generos.length
-        ? generos.join(', ')
-        : (obtenerPrimerValor(resena.genero, resena.juegoGenero) || 'Género no indicado')
-
-      return {
-        ...resena,
-        juegoTitulo,
-        juegoPortada,
-        juegoAnio,
-        juegoDesarrollador,
-        juegoHorasJugadas: horasJugadas,
-        juegoPuntuacion: puntuacionJuego,
-        plataformas,
-        generos,
-        plataforma: plataformaTexto,
-        genero: generoTexto,
-        puntuacion10: convertirPuntuacionA10(resena.puntuacion)
-      }
-    })
-  }, [resenas, juegos])
   const plataformasDisponibles = useMemo(() => {
-    return Array.from(
-      new Set(
-        resenasEnriquecidas.flatMap(resena => {
-          if (resena.plataformas?.length) return resena.plataformas
-          return resena.plataforma ? [resena.plataforma] : []
-        })
-      )
-    )
-      .filter(Boolean)
-      .sort((a, b) => a.localeCompare(b))
+    return Array.from(new Set(
+      resenasEnriquecidas.map(resena => resena.juegoPlataforma)
+    )).filter(Boolean).sort((a, b) => a.localeCompare(b))
   }, [resenasEnriquecidas])
 
   const generosDisponibles = useMemo(() => {
-    return Array.from(
-      new Set(
-        resenasEnriquecidas.flatMap(resena => {
-          if (resena.generos?.length) return resena.generos
-          return resena.genero ? [resena.genero] : []
-        })
-      )
-    )
-      .filter(Boolean)
-      .sort((a, b) => a.localeCompare(b))
+    return Array.from(new Set(
+      resenasEnriquecidas.map(resena => resena.juegoGenero)
+    )).filter(Boolean).sort((a, b) => a.localeCompare(b))
   }, [resenasEnriquecidas])
-
-  const resenasFiltradas = useMemo(() => {
-    const termino = busqueda.trim().toLowerCase()
-    const keywordInput = filtroPalabrasClave.trim().toLowerCase()
-    const puntuacionMinima = filtroPuntuacion ? Number(filtroPuntuacion) : null
-
-    return resenasEnriquecidas.filter(resena => {
-      const titulo = String(resena.titulo || '').toLowerCase()
-      const juegoTitulo = String(resena.juegoTitulo || '').toLowerCase()
-      const contenido = String(resena.contenido || '').toLowerCase()
-      const plataformas = (resena.plataformas?.length
-        ? resena.plataformas
-        : (resena.plataforma ? [resena.plataforma] : [])
-      ).map(item => item.toLowerCase())
-      const generos = (resena.generos?.length
-        ? resena.generos
-        : (resena.genero ? [resena.genero] : [])
-      ).map(item => item.toLowerCase())
-      const datosJuegoExtras = [
-        resena.juegoDesarrollador,
-        resena.juegoAnio,
-        resena.juegoHorasJugadas != null ? `${resena.juegoHorasJugadas}h` : '',
-        resena.juegoPuntuacion != null ? resena.juegoPuntuacion : ''
-      ]
-        .join(' ')
-        .toLowerCase()
-
-      const coincideBusqueda = !termino
-        ? true
-        : (
-            titulo.includes(termino) ||
-            juegoTitulo.includes(termino) ||
-            contenido.includes(termino) ||
-            plataformas.some(plat => plat.includes(termino)) ||
-            generos.some(gen => gen.includes(termino)) ||
-            datosJuegoExtras.includes(termino)
-          )
-
-      const coincidePlataforma = filtroPlataforma
-        ? plataformas.some(pl => pl.includes(filtroPlataforma))
-        : true
-
-      const coincideGenero = filtroGenero
-        ? generos.some(gen => gen.includes(filtroGenero))
-        : true
-
-      const coincidePuntuacion = puntuacionMinima !== null
-        ? resena.puntuacion10 >= puntuacionMinima
-        : true
-
-      const coincidePalabrasClave = keywordInput
-        ? keywordInput
-            .split(/\s+/)
-            .filter(Boolean)
-            .every(p =>
-              contenido.includes(p) ||
-              titulo.includes(p) ||
-              juegoTitulo.includes(p) ||
-              datosJuegoExtras.includes(p)
-            )
-        : true
-
-      return (
-        coincideBusqueda &&
-        coincidePlataforma &&
-        coincideGenero &&
-        coincidePuntuacion &&
-        coincidePalabrasClave
-      )
-    })
-  }, [
-    busqueda,
-    resenasEnriquecidas,
-    filtroPlataforma,
-    filtroPuntuacion,
-    filtroGenero,
-    filtroPalabrasClave
-  ])
 
   const promedioPuntuacion = useMemo(() => {
     if (!resenasEnriquecidas.length) return '0.0'
@@ -378,7 +197,14 @@ function ListaResenas() {
 
   const renderEstrellas = (p) => {
     const total = Math.max(0, Math.min(10, Math.round(Number(p) || 0)))
-    return '⭐'.repeat(total)
+    return Array.from({ length: 10 }, (_, index) => (
+      <span
+        key={`${p}-${index}`}
+        className={`resena-star ${index < total ? 'is-filled' : ''}`}
+      >
+        ★
+      </span>
+    ))
   }
 
   const formatearFecha = (fecha) => {
@@ -387,6 +213,14 @@ function ListaResenas() {
     return Number.isNaN(f.getTime())
       ? 'Sin fecha'
       : f.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })
+  }
+
+  if (cargando) {
+    return (
+      <div className="cargando">
+        Cargando reseñas...
+      </div>
+    )
   }
 
   const noHayResenas = resenas.length === 0
@@ -510,47 +344,38 @@ function ListaResenas() {
             <div className="resenas-grid">
               {resenasFiltradas.map(resena => {
                 const puntuacionNumerica = Math.min(10, Math.max(0, Number(resena.puntuacion10) || 0))
-                const plataformasParaMostrar = resena.plataformas?.length
-                  ? resena.plataformas
-                  : ['Plataforma desconocida']
-                const generosParaMostrar = resena.generos?.length
-                  ? resena.generos
-                  : ['Género no indicado']
+                const portadaJuego = resena.juegoPortada || PORTADA_POR_DEFECTO
                 const horasJugadasTexto = resena.juegoHorasJugadas != null
                   ? `${resena.juegoHorasJugadas} h`
                   : 'Sin registro'
                 const puntuacionJuegoTexto = resena.juegoPuntuacion != null
                   ? `${Math.max(0, Math.min(10, resena.juegoPuntuacion)).toFixed(1)} / 10`
                   : 'Sin puntuar'
-                const portadaJuego = resena.juegoPortada || PORTADA_POR_DEFECTO
+
+                const juego = resena.juegoRelacionado || {}
 
                 return (
                   <article key={resena._id} className="tarjeta-resena">
                     <div className="resena-header">
-                      <div className="resena-header-textos">
-                        <p className="resena-juego-subtitle">{resena.juegoTitulo}</p>
-                        <h3>{resena.titulo}</h3>
-                      </div>
-
-                      <div className="resena-score" aria-label={`Puntuación ${puntuacionNumerica.toFixed(1)} de 10`}>
-                        <span>{puntuacionNumerica.toFixed(1)}</span>
+                      <div className="resena-score-block" aria-label={`Puntuación ${puntuacionNumerica.toFixed(1)} de 10`}>
+                        <span className="resena-score-number">{puntuacionNumerica.toFixed(1)}</span>
                         <small>de 10</small>
+                        <div className="resena-stars" aria-hidden="true">
+                          {renderEstrellas(resena.puntuacion10)}
+                        </div>
                       </div>
 
-                      <span className="resena-puntuacion" aria-hidden="true">
-                        {renderEstrellas(resena.puntuacion10)}
-                      </span>
+                      <div className="resena-header-textos">
+                        <p className="resena-juego-subtitle">{(juego.titulo || 'Juego no encontrado').toUpperCase()}</p>
+                        <h3>{juego.titulo || 'Sin título'}</h3>
+                      </div>
                     </div>
-
-                    <p className="resena-juego">
-                      🎮 {resena.juegoTitulo}
-                    </p>
 
                     <div className="resena-juego-detalle">
                       <div className="resena-juego-portada">
                         <img
                           src={portadaJuego}
-                          alt={`Portada de ${resena.juegoTitulo}`}
+                          alt={`Portada de ${juego.titulo || 'Juego no encontrado'}`}
                           loading="lazy"
                           onError={(e) => {
                             e.currentTarget.onerror = null
@@ -580,32 +405,26 @@ function ListaResenas() {
                     </div>
 
                     <div className="resena-meta">
-                      {plataformasParaMostrar.map(plat => (
-                        <span key={`${resena._id}-plat-${plat}`} className="meta-pill">
-                          {plat}
-                        </span>
-                      ))}
-                      {generosParaMostrar.map(gen => (
-                        <span key={`${resena._id}-gen-${gen}`} className="meta-pill ghost">
-                          {gen}
-                        </span>
-                      ))}
+                      <span className="meta-pill">{resena.juegoPlataforma}</span>
+                      <span className="meta-pill ghost">{resena.juegoGenero}</span>
                     </div>
-
-                    <p className="resena-contenido">{resena.contenido}</p>
 
                     <p className="resena-fecha">
                       📅 {formatearFecha(resena.fecha)}
                     </p>
 
+                    <div className="descripcion-horizontal">
+                      <p>{resena.contenido}</p>
+                    </div>
+
                     <div className="resena-footer">
                       <div className="resena-acciones">
-                        <button className="btn-secondary" onClick={() => abrirFormulario(resena)}>
-                          ✏️ Editar
-                        </button>
-                        <button className="btn-danger" onClick={() => handleEliminar(resena._id)}>
-                          🗑️ Eliminar
-                        </button>
+                        <BotonEditar onClick={() => abrirFormulario(resena)} />
+                        <BotonEliminar onClick={() => {
+                          if (window.confirm('Eliminar esta reseña?')) {
+                            handleEliminar(resena._id)
+                          }
+                        }} />
                       </div>
                     </div>
                   </article>
