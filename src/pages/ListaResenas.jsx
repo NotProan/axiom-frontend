@@ -163,15 +163,27 @@ function ListaResenas() {
   }, [busqueda, filtroPlataforma, filtroGenero, filtroPuntuacion, resenasEnriquecidas])
 
   const plataformasDisponibles = useMemo(() => {
-    return Array.from(new Set(
-      resenasEnriquecidas.map(resena => resena.juegoPlataforma)
-    )).filter(Boolean).sort((a, b) => a.localeCompare(b))
+    const opciones = new Set()
+    resenasEnriquecidas.forEach(resena => {
+      const lista = (resena.juegoPlataforma || '')
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean)
+      lista.forEach(op => opciones.add(op))
+    })
+    return Array.from(opciones).sort((a, b) => a.localeCompare(b))
   }, [resenasEnriquecidas])
 
   const generosDisponibles = useMemo(() => {
-    return Array.from(new Set(
-      resenasEnriquecidas.map(resena => resena.juegoGenero)
-    )).filter(Boolean).sort((a, b) => a.localeCompare(b))
+    const opciones = new Set()
+    resenasEnriquecidas.forEach(resena => {
+      const lista = (resena.juegoGenero || '')
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean)
+      lista.forEach(op => opciones.add(op))
+    })
+    return Array.from(opciones).sort((a, b) => a.localeCompare(b))
   }, [resenasEnriquecidas])
 
   const promedioPuntuacion = useMemo(() => {
@@ -272,28 +284,28 @@ function ListaResenas() {
           <div className="resenas-toolbar">
             <div className="search-field search-field-compact">
               <span role="img" aria-hidden="true">🔍</span>
-              <input
-                type="search"
-                placeholder="Buscar por juego, título o plataforma..."
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-                aria-label="Buscar reseñas"
+                <input
+                  type="search"
+                  placeholder="Buscar por juego o reseña..."
+                  value={busqueda}
+                  onChange={(e) => setBusqueda(e.target.value)}
+                  aria-label="Buscar reseñas"
               />
             </div>
 
             <div className="filters-grid" role="group" aria-label="Filtros de reseñas">
-              <label className="filter-field">
-                <span>Plataforma</span>
-                <select
-                  value={filtroPlataforma}
-                  onChange={(e) => setFiltroPlataforma(e.target.value)}
-                >
-                  <option value="">Todas</option>
-                  {plataformasDisponibles.map(p => (
-                    <option key={p} value={p.toLowerCase()}>{p}</option>
-                  ))}
-                </select>
-              </label>
+                <label className="filter-field">
+                  <span>Plataforma</span>
+                  <select
+                    value={filtroPlataforma}
+                    onChange={(e) => setFiltroPlataforma(e.target.value)}
+                  >
+                    <option value="">Todas</option>
+                    {plataformasDisponibles.map(p => (
+                      <option key={p} value={p.toLowerCase()}>{p}</option>
+                    ))}
+                  </select>
+                </label>
 
               <label className="filter-field">
                 <span>Puntuación mínima</span>
@@ -308,15 +320,15 @@ function ListaResenas() {
                 </select>
               </label>
 
-              <label className="filter-field">
-                <span>Género</span>
-                <select value={filtroGenero} onChange={(e) => setFiltroGenero(e.target.value)}>
-                  <option value="">Todos</option>
-                  {generosDisponibles.map(g => (
-                    <option key={g} value={g.toLowerCase()}>{g}</option>
-                  ))}
-                </select>
-              </label>
+                <label className="filter-field">
+                  <span>Género</span>
+                  <select value={filtroGenero} onChange={(e) => setFiltroGenero(e.target.value)}>
+                    <option value="">Todos</option>
+                    {generosDisponibles.map(g => (
+                      <option key={g} value={g.toLowerCase()}>{g}</option>
+                    ))}
+                  </select>
+                </label>
 
               <label className="filter-field keyword-field">
                 <span>Palabras clave</span>
@@ -366,8 +378,10 @@ function ListaResenas() {
                       </div>
 
                       <div className="resena-header-textos">
-                        <p className="resena-juego-subtitle">{(juego.titulo || 'Juego no encontrado').toUpperCase()}</p>
-                        <h3>{juego.titulo || 'Sin título'}</h3>
+                        <h3 className="resena-title">“{resena.titulo}”</h3>
+                        {juego.titulo && (
+                          <p className="resena-game-name">{juego.titulo}</p>
+                        )}
                       </div>
                     </div>
 

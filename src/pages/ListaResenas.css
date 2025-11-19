@@ -244,9 +244,45 @@
 
 .resena-header {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 20px;
   align-items: flex-start;
+  margin-bottom: -20px;
+}
+
+.resena-score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 70px;
+}
+
+.resena-score-number {
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.resena-score-block small {
+  text-transform: none;
+  letter-spacing: 1px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.resena-stars {
+  display: flex;
+  gap: 1px;
+}
+
+.resena-star {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.resena-star.is-filled {
+  color: #ffd369;
 }
 
 .resena-header-textos {
@@ -269,6 +305,21 @@
   color: rgba(255, 255, 255, 0.55);
 }
 
+.resena-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.resena-game-name {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .resena-juego {
   margin: 0;
   color: #8ac4ff;
@@ -276,33 +327,6 @@
   font-size: 16px;
 }
 
-.resena-score {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.resena-score span {
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-}
-
-.resena-score small {
-  text-transform: none;
-  letter-spacing: 1px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.resena-puntuacion {
-  font-size: 18px;
-  color: #ffd369;
-  align-self: center;
-}
 
 .resena-juego-detalle {
   display: grid;
@@ -362,7 +386,7 @@
 .resena-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 7px;
 }
 
 .meta-pill {
@@ -544,4 +568,15 @@
     position: static;
     top: auto;
   }
+}
+.resena-acciones .edit-button,
+.resena-acciones .delete-button {
+  border-radius: 12px;
+  min-width: 130px;
+  padding: 0;
+  height: 44px;
+}
+
+.resena-acciones .edit-button {
+  box-shadow: none;
 }
