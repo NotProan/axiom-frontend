@@ -120,7 +120,9 @@ width: 40px;
 
 .view-button {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   outline: none;
   border: 0;
@@ -130,8 +132,8 @@ width: 40px;
   padding: 0;
   font-size: inherit;
   font-family: inherit;
-  width: 150px;
-  height: auto;
+  width: 40px;
+  height: 40px;
 }
 
 .view-circle {
@@ -139,8 +141,8 @@ width: 40px;
   position: relative;
   display: block;
   margin: 0;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 100%;
+  height: 100%;
   background: #888;
   border-radius: 1.625rem;
 }
@@ -158,7 +160,7 @@ width: 40px;
 
 .view-circle .view-icon.view-arrow {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  left: 0.625rem;
+  left: 10px;
   width: 1.125rem;
   height: 0.125rem;
   background: none;
@@ -177,22 +179,7 @@ width: 40px;
 }
 
 .view-button-text {
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0.55rem 0;
-  margin: 0 0 0 1.85rem;
-  color: #66666600;
-  font-weight: 700;
-  line-height: 1.6;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 11px;
-  margin-left: 12px;
-  margin-top: 2px;
+  display: none;
 }
 
 .view-button:hover .view-circle {
@@ -201,7 +188,7 @@ width: 40px;
 
 .view-button:hover .view-circle .view-icon.view-arrow {
   background: #fff;
-  transform: translate(1rem, 0);
+  transform: translate(6px, 0);
 }
 
 .view-button:hover .view-button-text {

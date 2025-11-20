@@ -9,6 +9,8 @@
   transition: all 0.3s ease;
   display: flex;
   height: 320px;
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
 }
 .tarjeta-horizontal:hover {
   transform: translateY(-5px);

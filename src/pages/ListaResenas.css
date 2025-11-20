@@ -285,6 +285,13 @@
   color: #ffd369;
 }
 
+.resena-acciones button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
 .resena-header-textos {
   display: flex;
   flex-direction: column;
@@ -395,6 +402,7 @@
   font-size: 13px;
   background: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.8);
+  margin-top: -15px;
 }
 
 .meta-pill.ghost {
@@ -454,12 +462,11 @@
 
 .resena-acciones {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .resena-acciones button {
-  flex: 1;
-  min-width: 120px;
+  min-width: auto;
 }
 
 .sin-resenas {
@@ -568,15 +575,4 @@
     position: static;
     top: auto;
   }
-}
-.resena-acciones .edit-button,
-.resena-acciones .delete-button {
-  border-radius: 12px;
-  min-width: 130px;
-  padding: 0;
-  height: 44px;
-}
-
-.resena-acciones .edit-button {
-  box-shadow: none;
 }

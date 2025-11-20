@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from 'react'
 import { resenasAPI, juegosAPI } from '../services/api'
 import FormularioResena from '../components/FormularioResena'
-import { BotonEliminar, BotonEditar } from '../assets/AnimacionesExtra/BotonesTarjeta'
+import { BotonEliminar, BotonEditar, BotonVer } from '../assets/AnimacionesExtra/BotonesTarjeta'
 import './ListaResenas.css'
 import { crearMapaJuegos, enriquecerResenasConJuego } from '../utils/juegoHelpers'
+import ModalResenas from '../components/ModalResenas'
 
 // --- IMAGEN BASE64 PARA PORTADA POR DEFECTO ---
 const PORTADA_POR_DEFECTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='280' viewBox='0 0 200 280'%3E%3Crect width='200' height='280' fill='%232d3748'/%3E%3Ctext x='50%25' y='50%25' fill='%23a0aec0' font-size='14' font-family='Arial' text-anchor='middle' dominant-baseline='middle'%3ESin+Portada%3C/text%3E%3C/svg%3E";
@@ -30,6 +31,7 @@ function ListaResenas() {
   const [resenaEditar, setResenaEditar] = useState(null)
   const [cargando, setCargando] = useState(true)
   const [resenasFiltradas, setResenasFiltradas] = useState([])
+  const [resenaVer, setResenaVer] = useState(null)
 
   const [busqueda, setBusqueda] = useState('')
   const [filtroPlataforma, setFiltroPlataforma] = useState('')
@@ -383,6 +385,7 @@ function ListaResenas() {
                           <p className="resena-game-name">{juego.titulo}</p>
                         )}
                       </div>
+
                     </div>
 
                     <div className="resena-juego-detalle">
@@ -433,12 +436,22 @@ function ListaResenas() {
 
                     <div className="resena-footer">
                       <div className="resena-acciones">
-                        <BotonEditar onClick={() => abrirFormulario(resena)} />
-                        <BotonEliminar onClick={() => {
-                          if (window.confirm('Eliminar esta reseña?')) {
-                            handleEliminar(resena._id)
-                          }
-                        }} />
+                        <BotonEditar
+                          onClick={() => abrirFormulario(resena)}
+                          className="resena-button edit-button"
+                        />
+                        <BotonEliminar
+                          onClick={() => {
+                            if (window.confirm('Eliminar esta reseña?')) {
+                              handleEliminar(resena._id)
+                            }
+                          }}
+                          className="resena-button delete-button"
+                        />
+                        <BotonVer
+                          onClick={() => setResenaVer(resena)}
+                          className="resena-button view-button"
+                        />
                       </div>
                     </div>
                   </article>
@@ -456,6 +469,9 @@ function ListaResenas() {
           onGuardar={handleGuardar}
           onCancelar={cerrarFormulario}
         />
+      )}
+      {resenaVer && (
+        <ModalResenas review={resenaVer} onCerrar={() => setResenaVer(null)} />
       )}
     </div>
   )

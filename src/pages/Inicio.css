@@ -5,6 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  background: radial-gradient(circle at 20% 20%, rgba(76, 120, 255, 0.12), transparent 32%),
+    radial-gradient(circle at 80% 0%, rgba(255, 114, 191, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(4, 6, 18, 0.94) 0%, #050816 45%, #050614 100%);
 }
 .inicio-txt-center {
   text-align: center;
@@ -13,12 +16,12 @@
 .inicio-content {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 72px;
   padding: 96px 32px 80px;
   color: inherit;
   max-width: 1200px;
   width: min(1200px, calc(100% - 64px));
-  margin: 1000px auto 0;
+  margin: clamp(52vh, 64vh, 720px) auto 0;
   border-radius: 32px;
   background: linear-gradient(145deg, rgba(6, 11, 29, 0.95), rgba(18, 23, 40, 0.95));
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
@@ -55,6 +58,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hero-video-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
 }
 
 .hero-gradient {
@@ -229,7 +240,8 @@
 .inicio-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+  gap: 20px;
+  margin-top: 6px;
 }
 
 .inicio-stats article {
@@ -253,7 +265,7 @@
 .inicio-highlights {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+  gap: 28px;
 }
 
 .highlight-card {

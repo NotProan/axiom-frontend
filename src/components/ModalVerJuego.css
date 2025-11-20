@@ -75,20 +75,30 @@
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 350px 1fr;
-  gap: 30px;
-  padding: 30px;
+  grid-template-columns: minmax(360px, 42%) 1fr;
+  gap: 20px;
+  padding: 0;
+  align-items: stretch;
+  --modal-pad: 30px;
 }
 
 .modal-izquierda {
   position: relative;
+  display: flex;
+  align-items: stretch;
+  height: calc(100% + (var(--modal-pad) * 2));
+  margin-left: calc(-1 * var(--modal-pad));
+  margin-top: calc(-1 * var(--modal-pad));
+  margin-bottom: calc(-1 * var(--modal-pad));
 }
 
 .modal-izquierda img {
   width: 100%;
-  height: auto;
-  border-radius: 12px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: #ffffff44 1px solid;
 }
 
 .modal-badge {
@@ -105,6 +115,7 @@
 
 .modal-derecha {
   color: white;
+  padding: var(--modal-pad);
 }
 
 .modal-derecha h2 {

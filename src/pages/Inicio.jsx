@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Inicio.css'
 import AxiomInicioVideo from '../assets/AnimacionesExtra/AxiomInicio.mp4'
+import { juegosAPI, resenasAPI } from '../services/api'
 
 const highlightCards = [
   {
@@ -11,7 +12,7 @@ const highlightCards = [
   },
   {
     title: 'Resenas expresas',
-    description: 'Plantillas recortadas para que anotes impresiones, puntuaciones y referencias visuales al vuelo.',
+    description: 'Captura impresiones rápidas, puntuaciones y referencias visuales sin salir del flujo de juego.',
     link: '/resenas',
     action: 'Escribir resena',
   },
@@ -23,14 +24,15 @@ const highlightCards = [
   },
 ]
 
-const stats = [
-  { label: 'Partidas registradas', value: '1.240' },
-  { label: 'Resenas capturadas', value: '315' },
-  { label: 'Promedio de horas / semana', value: '18.6 h' },
-]
-
 function Inicio() {
   const videoRef = useRef(null)
+  const [metricas, setMetricas] = useState({
+    totalJuegos: 0,
+    totalResenas: 0,
+    horasTotales: 0,
+    plataformasUnicas: 0,
+  })
+  const [cargandoMetricas, setCargandoMetricas] = useState(true)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,6 +43,56 @@ function Inicio() {
 
     return () => clearTimeout(timer)
   }, [])
+
+  useEffect(() => {
+    const cargarMetricas = async () => {
+      try {
+        const [juegosResp, resenasResp] = await Promise.all([
+          juegosAPI.obtenerTodos(),
+          resenasAPI.obtenerTodas(),
+        ])
+
+        const juegos = juegosResp.data || []
+        const resenas = resenasResp.data || []
+
+        const horasTotales = juegos.reduce(
+          (acc, juego) => acc + (Number(juego.horasJugadas) || 0),
+          0
+        )
+
+        const plataformas = new Set()
+        juegos.forEach((juego) => {
+          String(juego.plataforma || '')
+            .split(',')
+            .map((p) => p.trim())
+            .filter(Boolean)
+            .forEach((p) => plataformas.add(p.toLowerCase()))
+        })
+
+        setMetricas({
+          totalJuegos: juegos.length,
+          totalResenas: resenas.length,
+          horasTotales,
+          plataformasUnicas: plataformas.size,
+        })
+      } catch (error) {
+        console.error('No se pudieron cargar métricas de inicio', error)
+      } finally {
+        setCargandoMetricas(false)
+      }
+    }
+
+    cargarMetricas()
+  }, [])
+
+  const formatearNumero = (valor) =>
+    typeof valor === 'number' ? valor.toLocaleString('es-ES') : valor
+
+  const stats = [
+    { label: 'Juegos en biblioteca', value: formatearNumero(metricas.totalJuegos) },
+    { label: 'Resenas publicadas', value: formatearNumero(metricas.totalResenas) },
+    { label: 'Horas registradas', value: `${formatearNumero(metricas.horasTotales)} h` },
+  ]
 
   return (
     <div className="inicio-page">
@@ -60,10 +112,11 @@ function Inicio() {
           <div className="hero-gradient" aria-hidden="true" />
           <div className="hero-copy">
             <p className="hero-eyebrow">Gametracker</p>
-            <h1>Documenta tu pasión, planea el próximo desafío</h1>
+            <h1>Un solo lugar para tus juegos</h1>
             <p className="hero-description">
-              Lleva la biblioteca, las reseñas y las estadísticas en una sola pantalla. Gametracker conecta tus sesiones de
-              juego con datos accionables y mantiene tu backlog en orden con filtros rápidos y estados personalizables.
+              {cargandoMetricas
+                ? 'Sincronizando tu biblioteca...'
+                : `Juegos: ${formatearNumero(metricas.totalJuegos)} · Reseñas: ${formatearNumero(metricas.totalResenas)} · Horas: ${formatearNumero(metricas.horasTotales)} · Plataformas: ${formatearNumero(metricas.plataformasUnicas)}`}
             </p>
             <div className="hero-actions">
               <a href="/biblioteca" className="btn primary">
@@ -89,7 +142,9 @@ function Inicio() {
               <div className="hero-panel-bar" style={{ width: '74%' }}>
                 <span>Mis horas de juego</span>
               </div>
-              <p className="hero-panel-text">Tendencia positiva contra la semana anterior. Tus reseñas subieron un 18%.</p>
+              <p className="hero-panel-text">
+                Tendencia positiva contra la semana anterior. Tus reseñas subieron un 18%.
+              </p>
             </div>
           <div className="hero-panel-foot">
             <div>
