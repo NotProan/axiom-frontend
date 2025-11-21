@@ -3,6 +3,10 @@
   color: #f3f4ff;
 }
 
+body.bg-resenas .App {
+  background: radial-gradient(circle at 80% 12%, #1b2148 0%, #2b1551 40%, #0a0d20 90%);
+}
+
 .resenas-layout {
   display: grid;
   grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);

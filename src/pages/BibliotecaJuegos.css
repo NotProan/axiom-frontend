@@ -2,6 +2,10 @@
   padding: 20px 0;
 }
 
+body.bg-biblioteca .App {
+  background: linear-gradient(135deg, #06102c, #030c2bf8);
+}
+
 .biblioteca-header {
   margin-left: 50px;
   display: flex;

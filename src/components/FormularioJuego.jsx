@@ -208,7 +208,7 @@ const generosDisponibles = [
             />
           </div>
 
-          <div className="form-group form-group-full">
+          <div className="form-group form-group-full form-footer-row">
             <label className="checkbox-container">
               <input
                 type="checkbox"
@@ -218,15 +218,14 @@ const generosDisponibles = [
               />
               <span>Juego completado</span>
             </label>
-          </div>
-
-          <div className="form-actions">
-            <button type="submit" className="btn-submit-acrylic">
-              {juegoEditar ? 'Guardar Cambios' : 'Agregar Juego'}
-            </button>
-            <button type="button" className="btn-cancel-acrylic" onClick={onCancelar}>
-              Cancelar
-            </button>
+            <div className="form-actions">
+              <button type="submit" className="btn-submit-acrylic">
+                {juegoEditar ? 'Guardar Cambios' : 'Agregar Juego'}
+              </button>
+              <button type="button" className="btn-cancel-acrylic" onClick={onCancelar}>
+                Cancelar
+              </button>
+            </div>
           </div>
         </form>
       </div>

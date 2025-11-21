@@ -4,9 +4,7 @@
   position: sticky;
   top: 0;
   z-index: 999;
-  opacity: 0;
-  animation: navbarFadeIn 2s ease forwards;
-
+  opacity: 1;
 }
 
 .navbar-container-compact {
@@ -17,12 +15,14 @@
   align-items: center;
   height: 60px;
   padding: 0 30px;
-  background: rgba(29, 50, 114, 0.384);
+  background: rgba(28, 43, 87, 0.349);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  animation: navbarFadeIn 1s ease forwards;
 }
 
 .navbar-logo-compact {
@@ -47,6 +47,7 @@
   padding: 0;
   flex: 1;
   justify-content: center;
+  
 }
 
 .navbar-link-compact {
@@ -58,6 +59,7 @@
   display: inline-block;
   transition: all 0.3s ease;
   border-radius: 25px;
+  
 }
 
 .navbar-link-compact:hover {
@@ -132,6 +134,7 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+    
   }
 }
 
@@ -148,5 +151,6 @@
   .navbar-container-compact {
     padding: 0 15px;
     justify-content: space-between;
+      background: rgba(28, 43, 87, 0.349);
   }
 }

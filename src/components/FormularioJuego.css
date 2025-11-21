@@ -5,8 +5,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.432);
-  backdrop-filter: blur(8px);
+  background: rgba(6, 12, 34, 0.55);
+  backdrop-filter: blur(10px) saturate(140%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,10 +17,10 @@
 }
 
 .formulario-container-acrylic {
-  background: linear-gradient(135deg, rgba(43, 5, 255, 0.329), rgba(17, 199, 255, 0.295));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, rgba(22, 28, 58, 0.78) 0%, rgba(42, 20, 94, 0.68) 32%, rgba(24, 125, 176, 0.58) 65%, rgba(41, 211, 220, 0.36) 100%);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
   padding: 40px;
   max-width: 700px;
@@ -28,7 +28,7 @@
   max-height: 90vh;
   overflow-y: auto;
   color: white;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .formulario-titulo {
@@ -71,6 +71,13 @@
   display: block;
   margin-bottom: 6px;
   color: white;
+}
+
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
 }
 
 .form-group input,
@@ -163,31 +170,56 @@
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 10px;
   margin-top: 10px;
 }
 
+.form-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.form-footer-row .form-actions {
+  margin-top: 0;
+}
+
+.btn-submit-acrylic,
+.btn-cancel-acrylic {
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: all 0.25s ease;
+}
+
 .btn-submit-acrylic {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(120deg, rgba(136, 95, 255, 0.9), rgba(70, 214, 255, 0.94));
+  color: #f5f7ff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 30px rgba(93, 154, 255, 0.35);
 }
 
 .btn-submit-acrylic:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 16px 38px rgba(93, 154, 255, 0.45);
+  filter: saturate(110%);
 }
 
 .btn-cancel-acrylic {
   background: rgba(255, 255, 255, 0.08);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e6edff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
 }
 
 .btn-cancel-acrylic:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
 }
 
 .rating-input-wrapper {
@@ -262,7 +294,20 @@
     padding: 25px;
   }
   
+  .form-footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .form-actions {
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .form-actions button {
+    width: 100%;
   }
 }

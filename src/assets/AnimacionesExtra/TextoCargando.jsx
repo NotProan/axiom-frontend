@@ -1,6 +1,6 @@
 import './TextoCargando.css'
 
-function TextoCargando({ texto = "Cargando juegos", emoji = "" }) {
+function TextoCargando({ texto = "Cargando  reseñas...", emoji = "" }) {
   return (
     <div className="contenedor-cargando">
       <div className="texto-animado">

@@ -3,24 +3,27 @@ import './Inicio.css'
 import AxiomInicioVideo from '../assets/AnimacionesExtra/AxiomInicio.mp4'
 import { juegosAPI, resenasAPI } from '../services/api'
 
-const highlightCards = [
+const insightCards = [
   {
-    title: 'Biblioteca viva',
-    description: 'Organiza lanzamientos, pendientes y joyas retro con etiquetas por plataforma y estado.',
-    link: '/biblioteca',
+    title: 'Coleccion inteligente',
+    description:
+      'Organiza lanzamientos, pendientes y retro; todo se alimenta de tu biblioteca cargada desde juegosAPI.',
     action: 'Ver biblioteca',
+    link: '/biblioteca',
   },
   {
-    title: 'Resenas expresas',
-    description: 'Captura impresiones rápidas, puntuaciones y referencias visuales sin salir del flujo de juego.',
-    link: '/resenas',
+    title: 'Resenas express',
+    description:
+      'Captura impresiones rapidas y puntajes; tus resenas se guardan y se listan directo desde resenasAPI.',
     action: 'Escribir resena',
+    link: '/resenas',
   },
   {
-    title: 'Panel personal',
-    description: 'Estadisticas de hábitos, plataformas favoritas y sesiones completadas para decidir tu próximo run.',
+    title: 'Panel de estadisticas',
+    description:
+      'Habitos, plataformas favoritas y sesiones completadas calculadas en vivo con los datos de tus juegos.',
+    action: 'Ver estadisticas',
     link: '/estadisticas',
-    action: 'Revisar datos',
   },
 ]
 
@@ -55,10 +58,7 @@ function Inicio() {
         const juegos = juegosResp.data || []
         const resenas = resenasResp.data || []
 
-        const horasTotales = juegos.reduce(
-          (acc, juego) => acc + (Number(juego.horasJugadas) || 0),
-          0
-        )
+        const horasTotales = juegos.reduce((acc, juego) => acc + (Number(juego.horasJugadas) || 0), 0)
 
         const plataformas = new Set()
         juegos.forEach((juego) => {
@@ -76,13 +76,20 @@ function Inicio() {
           plataformasUnicas: plataformas.size,
         })
       } catch (error) {
-        console.error('No se pudieron cargar métricas de inicio', error)
+        console.error('No se pudieron cargar metricas de inicio', error)
       } finally {
         setCargandoMetricas(false)
       }
     }
 
     cargarMetricas()
+  }, [])
+
+  useEffect(() => {
+    document.body.classList.add('bg-inicio')
+    return () => {
+      document.body.classList.remove('bg-inicio')
+    }
   }, [])
 
   const formatearNumero = (valor) =>
@@ -107,78 +114,70 @@ function Inicio() {
         />
       </section>
 
+      <div className="inicio-headline-banner">
+        <h2>ORGANIZA TUS JUEGOS A OTRO NIVEL</h2>
+        <button className="headline-cta">Explora mas</button>
+        <p className="headline-subcopy">Organiza, resena y mide todo en un solo lugar</p>
+      </div>
+
       <div className="inicio-content">
-        <section className="landing-hero fade-in">
-          <div className="hero-gradient" aria-hidden="true" />
-          <div className="hero-copy">
-            <p className="hero-eyebrow">Gametracker</p>
-            <h1>Un solo lugar para tus juegos</h1>
+        <section className="hero-stack fade-in">
+          <div className="hero-glass hero-glass-primary">
+            <p className="hero-eyebrow"></p>
+            <h1>Tu cuartel general gamer</h1>
             <p className="hero-description">
               {cargandoMetricas
                 ? 'Sincronizando tu biblioteca...'
-                : `Juegos: ${formatearNumero(metricas.totalJuegos)} · Reseñas: ${formatearNumero(metricas.totalResenas)} · Horas: ${formatearNumero(metricas.horasTotales)} · Plataformas: ${formatearNumero(metricas.plataformasUnicas)}`}
+                : `Juegos: ${formatearNumero(metricas.totalJuegos)} | Resenas: ${formatearNumero(metricas.totalResenas)} | Horas: ${formatearNumero(metricas.horasTotales)} | Plataformas: ${formatearNumero(metricas.plataformasUnicas)}`}
             </p>
+            <div className="hero-divider">
+            </div>
             <div className="hero-actions">
               <a href="/biblioteca" className="btn primary">
                 Registrar juego
               </a>
               <a href="/resenas" className="btn secondary">
-                Escribir reseña
+                Escribir resena
               </a>
             </div>
-            <div className="hero-tags">
-              <span>Biblioteca</span>
-              <span>Reseñas</span>
-              <span>Estadísticas</span>
-              <span>Rutinas</span>
-            </div>
           </div>
-          <div className="hero-panel">
-            <div className="hero-panel-header">
-              <p>Resumen semanal</p>
-              <span>Actualizado hace 8 min</span>
-            </div>
-            <div className="hero-panel-body">
-              <div className="hero-panel-bar" style={{ width: '74%' }}>
-                <span>Mis horas de juego</span>
-              </div>
-              <p className="hero-panel-text">
-                Tendencia positiva contra la semana anterior. Tus reseñas subieron un 18%.
-              </p>
-            </div>
-          <div className="hero-panel-foot">
-            <div>
-              <strong>+37</strong>
-              <span>Sesiones conectadas</span>
-            </div>
-            <div>
-              <strong>12</strong>
-              <span>Títulos en progreso</span>
-            </div>
-            <div>
-              <strong>45%</strong>
-              <span>Tiempo de juego activo</span>
-            </div>
-            <div>
-              <strong>28</strong>
-              <span>Metas semanales</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
-        <section className="inicio-stats">
-          {stats.map(({ label, value }) => (
-            <article key={label} className="fade-in-card">
-              <p className="stat-value">{value}</p>
-              <p className="stat-label">{label}</p>
-            </article>
-          ))}
+          <div className="hero-glass hero-metrics">
+            <div className="hero-metrics-head">
+              <p>Actividad en vivo</p>
+              <span>Actualizado hace 5 min</span>
+            </div>
+            <div className="hero-metrics-grid">
+              {stats.map(({ label, value }) => (
+                <div key={label} className="metric-card">
+                  <p className="metric-value">{value || '0'}</p>
+                  <p className="metric-label">{label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="delta-note">
+              Pulso estable: mantiene tus sesiones y resenas en ritmo semanal.
+            </div>
+          </div>
         </section>
 
-        <section className="inicio-highlights">
-          {highlightCards.map(({ title, description, link, action }) => (
-            <article key={title} className="highlight-card fade-in-card">
+        <section className="orb-section fade-in">
+          <div className="orb-card">
+            <p className="hero-eyebrow">Guardado automatico</p>
+            <h3>Tu progreso, guardado automaticamente</h3>
+            <p className="orb-text">
+              Respalda partidas, horas y clips con copias seguras. Controla que compartes y que se queda solo contigo.
+            </p>
+            <div className="orb-tags">
+              <span>Copias rapidas</span>
+              <span>Sincronizacion segura</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="insight-grid fade-in">
+          {insightCards.map(({ title, description, action, link }) => (
+            <article key={title} className="insight-card">
               <h3>{title}</h3>
               <p>{description}</p>
               <a className="highlight-link" href={link}>
@@ -188,23 +187,7 @@ function Inicio() {
           ))}
         </section>
 
-        <section className="inicio-cta fade-in">
-          <div>
-            <h3>Mantén la constancia</h3>
-            <p>
-              Planifica sesiones, registra cada batalla y comparte impresiones detalladas. La página de inicio ahora concentra
-              tus métricas esenciales para que decidas qué jugar y cuándo pausar.
-            </p>
-          </div>
-          <div className="inicio-cta-actions">
-            <a href="/biblioteca" className="btn primary">
-              Abrir biblioteca
-            </a>
-            <a href="/resenas" className="btn ghost">
-              Crear reseña
-            </a>
-          </div>
-        </section>
+
       </div>
     </div>
   )

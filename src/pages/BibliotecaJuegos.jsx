@@ -20,6 +20,13 @@ const [juegosFiltrados, setJuegosFiltrados] = useState([])
     cargarJuegos()
   }, [])
 
+  useEffect(() => {
+    document.body.classList.add('bg-biblioteca')
+    return () => {
+      document.body.classList.remove('bg-biblioteca')
+    }
+  }, [])
+
   
   useEffect(() => {
     const handleAbrirFormulario = () => {

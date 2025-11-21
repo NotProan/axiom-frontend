@@ -5,6 +5,7 @@ import { BotonEliminar, BotonEditar, BotonVer } from '../assets/AnimacionesExtra
 import './ListaResenas.css'
 import { crearMapaJuegos, enriquecerResenasConJuego } from '../utils/juegoHelpers'
 import ModalResenas from '../components/ModalResenas'
+import TextoCargando from '../assets/AnimacionesExtra/TextoCargando'
 
 // --- IMAGEN BASE64 PARA PORTADA POR DEFECTO ---
 const PORTADA_POR_DEFECTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='280' viewBox='0 0 200 280'%3E%3Crect width='200' height='280' fill='%232d3748'/%3E%3Ctext x='50%25' y='50%25' fill='%23a0aec0' font-size='14' font-family='Arial' text-anchor='middle' dominant-baseline='middle'%3ESin+Portada%3C/text%3E%3C/svg%3E";
@@ -38,6 +39,13 @@ function ListaResenas() {
   const [filtroPuntuacion, setFiltroPuntuacion] = useState('')
   const [filtroGenero, setFiltroGenero] = useState('')
   const [filtroPalabrasClave, setFiltroPalabrasClave] = useState('')
+
+  useEffect(() => {
+    document.body.classList.add('bg-resenas')
+    return () => {
+      document.body.classList.remove('bg-resenas')
+    }
+  }, [])
 
   useEffect(() => {
     cargarDatos()
@@ -232,7 +240,7 @@ function ListaResenas() {
   if (cargando) {
     return (
       <div className="cargando">
-        Cargando reseñas...
+        <TextoCargando />
       </div>
     )
   }
