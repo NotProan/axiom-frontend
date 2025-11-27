@@ -1,0 +1,122 @@
+.modal-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(7, 11, 25, 0.65);
+  backdrop-filter: blur(8px);
+  z-index: 1200;
+}
+
+.modal-confirm-card {
+  width: min(520px, 100%);
+  background: linear-gradient(145deg, rgba(23, 30, 52, 0.95), rgba(15, 18, 30, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 1.5rem;
+  color: #e8ecf5;
+  animation: modal-pop 180ms ease-out;
+}
+
+.modal-confirm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-confirm-eyebrow {
+  margin: 0;
+  color: #8fa3c7;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+}
+
+.modal-confirm-title {
+  margin: 0.15rem 0 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.modal-confirm-message {
+  margin: 0 0 1.25rem;
+  line-height: 1.5;
+  color: #c5cee1;
+}
+
+.modal-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.modal-confirm-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 0.65rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  font-size: 0.95rem;
+}
+
+.modal-confirm-btn:hover {
+  transform: translateY(-1px);
+}
+
+.modal-confirm-btn:active {
+  transform: translateY(0);
+}
+
+.modal-confirm-btn.primary {
+  background: linear-gradient(135deg, #5dd7ff, #3b82f6);
+  color: #0c1024;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.35);
+}
+
+.modal-confirm-btn.danger {
+  background: linear-gradient(135deg, #ff5f6d, #f2405a);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(242, 64, 90, 0.35);
+}
+
+.modal-confirm-btn.ghost {
+  background: rgba(255, 255, 255, 0.07);
+  color: #dfe7f6;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-confirm-close {
+  background: rgba(255, 255, 255, 0.06);
+  color: #c9d3e8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms ease, transform 120ms ease;
+}
+
+.modal-confirm-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: rotate(-5deg);
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

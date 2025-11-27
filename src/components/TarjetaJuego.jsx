@@ -70,11 +70,7 @@ function TarjetaJuego({ juego, onEliminar, onEditar, onVer }) {
 
         <div className="botones-horizontal">
           <BotonEditar onClick={() => onEditar(juego)} />
-          <BotonEliminar onClick={() => {
-            if(window.confirm('Eliminar este juego?')) {
-              onEliminar(juego._id)
-            }
-          }} />
+          <BotonEliminar onClick={() => onEliminar(juego)} />
           <BotonVer onClick={() => onVer && onVer(juego)} />
         </div>
       </div>

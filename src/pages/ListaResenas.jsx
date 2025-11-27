@@ -6,6 +6,7 @@ import './ListaResenas.css'
 import { crearMapaJuegos, enriquecerResenasConJuego } from '../utils/juegoHelpers'
 import ModalResenas from '../components/ModalResenas'
 import TextoCargando from '../assets/AnimacionesExtra/TextoCargando'
+import ModalConfirmacion from '../components/ModalConfirmacion'
 
 // --- IMAGEN BASE64 PARA PORTADA POR DEFECTO ---
 const PORTADA_POR_DEFECTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='280' viewBox='0 0 200 280'%3E%3Crect width='200' height='280' fill='%232d3748'/%3E%3Ctext x='50%25' y='50%25' fill='%23a0aec0' font-size='14' font-family='Arial' text-anchor='middle' dominant-baseline='middle'%3ESin+Portada%3C/text%3E%3C/svg%3E";
@@ -33,12 +34,46 @@ function ListaResenas() {
   const [cargando, setCargando] = useState(true)
   const [resenasFiltradas, setResenasFiltradas] = useState([])
   const [resenaVer, setResenaVer] = useState(null)
+  const [modalConfig, setModalConfig] = useState({
+    abierto: false,
+    titulo: '',
+    mensaje: '',
+    tipo: 'info',
+    confirmText: 'Guardar',
+    cancelText: 'Cancelar',
+    okText: 'Ok',
+    onConfirm: null,
+    onCancel: null
+  })
 
   const [busqueda, setBusqueda] = useState('')
   const [filtroPlataforma, setFiltroPlataforma] = useState('')
   const [filtroPuntuacion, setFiltroPuntuacion] = useState('')
   const [filtroGenero, setFiltroGenero] = useState('')
   const [filtroPalabrasClave, setFiltroPalabrasClave] = useState('')
+
+  const cerrarModal = () => {
+    setModalConfig(prev => ({
+      ...prev,
+      abierto: false,
+      onConfirm: null,
+      onCancel: null
+    }))
+  }
+
+  const mostrarModal = (config) => {
+    setModalConfig({
+      abierto: true,
+      titulo: config.titulo || '',
+      mensaje: config.mensaje || '',
+      tipo: config.tipo || 'info',
+      confirmText: config.confirmText,
+      cancelText: config.cancelText,
+      okText: config.okText,
+      onConfirm: config.onConfirm || null,
+      onCancel: config.onCancel || null
+    })
+  }
 
   useEffect(() => {
     document.body.classList.add('bg-resenas')
@@ -77,7 +112,12 @@ function ListaResenas() {
       console.log(resenasResponse.data)
     } catch (error) {
       console.error('Error al cargar datos:', error)
-      alert('Error al cargar reseñas y juegos')
+      mostrarModal({
+        titulo: 'Error al cargar datos',
+        mensaje: 'No pudimos cargar reseñas y juegos. Intenta de nuevo.',
+        tipo: 'info',
+        onConfirm: cerrarModal
+      })
     } finally {
       setCargando(false)
     }
@@ -92,10 +132,20 @@ function ListaResenas() {
 
       if (resenaEditar) {
         await resenasAPI.actualizar(resenaEditar._id, payload)
-        alert('Reseña actualizada')
+        mostrarModal({
+          titulo: 'Reseña actualizada',
+          mensaje: 'Los cambios de la reseña se guardaron.',
+          tipo: 'info',
+          onConfirm: cerrarModal
+        })
       } else {
         await resenasAPI.crear(payload)
-        alert('Reseña publicada')
+        mostrarModal({
+          titulo: 'Reseña publicada',
+          mensaje: 'Tu reseña se publicó correctamente.',
+          tipo: 'info',
+          onConfirm: cerrarModal
+        })
       }
 
       cargarDatos()
@@ -103,20 +153,45 @@ function ListaResenas() {
       setResenaEditar(null)
     } catch (error) {
       console.error('Error al guardar:', error)
-      alert('Error al guardar la reseña')
+      mostrarModal({
+        titulo: 'Error al guardar',
+        mensaje: 'No se pudo guardar la reseña. Intenta nuevamente.',
+        tipo: 'info',
+        onConfirm: cerrarModal
+      })
     }
   }
 
-  const handleEliminar = async (id) => {
-    if (window.confirm('¿Eliminar esta reseña?')) {
-      try {
-        await resenasAPI.eliminar(id)
-        alert('Reseña eliminada')
-        cargarDatos()
-      } catch (error) {
-        console.error('Error al eliminar:', error)
-      }
-    }
+  const solicitarEliminar = (resena) => {
+    mostrarModal({
+      titulo: 'Eliminar reseña',
+      mensaje: `Eliminar la reseña "${resena.titulo}"?`,
+      tipo: 'confirm',
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      onConfirm: async () => {
+        cerrarModal()
+        try {
+          await resenasAPI.eliminar(resena._id)
+          await cargarDatos()
+          mostrarModal({
+            titulo: 'Reseña eliminada',
+            mensaje: 'La reseña se eliminó correctamente.',
+            tipo: 'info',
+            onConfirm: cerrarModal
+          })
+        } catch (error) {
+          console.error('Error al eliminar:', error)
+          mostrarModal({
+            titulo: 'No se pudo eliminar',
+            mensaje: 'Hubo un problema al eliminar la reseña. Intenta de nuevo.',
+            tipo: 'info',
+            onConfirm: cerrarModal
+          })
+        }
+      },
+      onCancel: cerrarModal
+    })
   }
 
   const abrirFormulario = (resena = null) => {
@@ -164,13 +239,31 @@ function ListaResenas() {
       const puntuacionMin = Number(filtroPuntuacion)
       resultado = resultado.filter(resena => resena.puntuacion10 >= puntuacionMin)
     }
+
+    const keywords = filtroPalabrasClave
+      .split(',')
+      .map(p => p.trim().toLowerCase())
+      .filter(Boolean)
+
+    if (keywords.length) {
+      resultado = resultado.filter(resena => {
+        const textoBuscado = [
+          resena.titulo,
+          resena.contenido,
+          resena.juegoTitulo,
+          resena.juegoGenero,
+          resena.juegoPlataforma
+        ].map(v => String(v || '').toLowerCase()).join(' ')
+        return keywords.every(palabra => textoBuscado.includes(palabra))
+      })
+    }
     
     setResenasFiltradas(resultado)
   }
 
   useEffect(() => {
     aplicarFiltros()
-  }, [busqueda, filtroPlataforma, filtroGenero, filtroPuntuacion, resenasEnriquecidas])
+  }, [busqueda, filtroPlataforma, filtroGenero, filtroPuntuacion, filtroPalabrasClave, resenasEnriquecidas])
 
   const plataformasDisponibles = useMemo(() => {
     const opciones = new Set()
@@ -449,11 +542,7 @@ function ListaResenas() {
                           className="resena-button edit-button"
                         />
                         <BotonEliminar
-                          onClick={() => {
-                            if (window.confirm('Eliminar esta reseña?')) {
-                              handleEliminar(resena._id)
-                            }
-                          }}
+                          onClick={() => solicitarEliminar(resena)}
                           className="resena-button delete-button"
                         />
                         <BotonVer
@@ -476,11 +565,28 @@ function ListaResenas() {
           resenaEditar={resenaEditar}
           onGuardar={handleGuardar}
           onCancelar={cerrarFormulario}
+          onAviso={(config) => mostrarModal({
+            ...config,
+            tipo: config.tipo || 'info',
+            onConfirm: cerrarModal
+          })}
         />
       )}
       {resenaVer && (
         <ModalResenas review={resenaVer} onCerrar={() => setResenaVer(null)} />
       )}
+      <ModalConfirmacion
+        abierto={modalConfig.abierto}
+        titulo={modalConfig.titulo}
+        mensaje={modalConfig.mensaje}
+        tipo={modalConfig.tipo}
+        confirmText={modalConfig.confirmText}
+        cancelText={modalConfig.cancelText}
+        okText={modalConfig.okText}
+        onConfirm={modalConfig.onConfirm}
+        onCancel={modalConfig.onCancel}
+        onClose={cerrarModal}
+      />
     </div>
   )
 }

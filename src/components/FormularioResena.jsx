@@ -21,7 +21,7 @@ const prepararPuntuacionParaGuardar = (valor) => {
   return Number((numero / 2).toFixed(2))
 }
 
-function FormularioResena({ juegos, resenaEditar, onGuardar, onCancelar }) {
+function FormularioResena({ juegos, resenaEditar, onGuardar, onCancelar, onAviso }) {
   const [formData, setFormData] = useState(() => crearEstadoInicial())
   const [juegoBusqueda, setJuegoBusqueda] = useState('')
 
@@ -82,7 +82,13 @@ function FormularioResena({ juegos, resenaEditar, onGuardar, onCancelar }) {
     e.preventDefault()
 
     if (!formData.juegoId) {
-      alert('Selecciona un juego válido antes de guardar la reseña')
+      if (onAviso) {
+        onAviso({
+          titulo: 'Falta seleccionar juego',
+          mensaje: 'Elige un juego valido de tu biblioteca antes de guardar la resena.',
+          tipo: 'info'
+        })
+      }
       return
     }
 
